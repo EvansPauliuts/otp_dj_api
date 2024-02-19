@@ -1,0 +1,102 @@
+version: '3.9'
+
+services:
+  api: &api
+    build:
+      context: .
+      dockerfile: docker/dev/Dockerfile
+    container_name: api
+    command: >
+      sh -c 'python manage.py runserver 0.0.0.0:8000'
+    volumes:
+      - ./app:/app
+    ports:
+      - '8000:8000'
+    env_file:
+      - ./.env
+    restart: unless-stopped
+    depends_on:
+      - db
+      - rabbitmq
+    networks:
+      - celery-network
+
+  db:
+    image: postgres:15-alpine
+    container_name: db
+    ports:
+      - '${POSTGRES_PORT}:5432'
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: always
+    env_file:
+      - ./.env
+    networks:
+      - celery-network
+
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=mquser
+      - RABBITMQ_DEFAULT_PASS=mqpass
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - celery-network
+
+  celery:
+    <<: *api
+    command: celery -A core worker --loglevel=info
+    container_name: celery
+    ports: []
+    volumes:
+      - ./app:/app
+    env_file:
+      - ./.env
+    depends_on:
+      - api
+      - rabbitmq
+    networks:
+      - celery-network
+
+  celery-beat:
+    <<: *api
+    command: celery -A core beat -l info
+    container_name: celery_beat
+    ports: []
+    volumes:
+      - ./app:/app
+    env_file:
+      - ./.env
+    networks:
+      - celery-network
+    depends_on:
+      - celery
+      - rabbitmq
+
+  dashboard:
+    <<: *api
+    container_name: celery_worker
+    command: celery --broker=${RABBITMQ_URL} flower --port=5555
+    ports:
+      - '25559:5555'
+    env_file:
+      - ./.env
+    depends_on:
+      - api
+      - celery
+      - rabbitmq
+    networks:
+      - celery-network
+
+volumes:
+  pg_data:
+
+networks:
+  celery-network:
+    driver: bridge
