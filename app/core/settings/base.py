@@ -152,6 +152,8 @@ DATE_INPUT_FORMATS = [
 STATIC_URL = '/static/'
 STATIC_ROOT = 'static/'
 
+AUTH_USER_MODEL = 'api.User'
+
 
 WSGI_APPLICATION = "core.wsgi.application"
 ASGI_APPLICATION = "core.asgi.application"
