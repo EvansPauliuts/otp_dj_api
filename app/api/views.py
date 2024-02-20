@@ -3,8 +3,15 @@ from rest_framework import viewsets, status, serializers
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema, inline_serializer
+from rest_framework.decorators import action
 
-from .serializers import ListUserSerializer, UpdateUserSerializer, OnboardUserSerializer
+from .serializers import (
+    ListUserSerializer,
+    UpdateUserSerializer,
+    OnboardUserSerializer,
+    EmailSerializer,
+    AccountVerificationSerializer,
+)
 from .utils import is_admin_user, IsAdmin
 
 
@@ -62,3 +69,59 @@ class UserViewSets(viewsets.ModelViewSet):
             {'success': True, 'message': 'OTP sent for verification!'},
             status=status.HTTP_200_OK,
         )
+
+
+class AuthViewSets(viewsets.GenericViewSet):
+    serializer_class = EmailSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_permissions(self):
+        permissions_classes = self.permission_classes
+
+        if self.action in (
+            'initiate_password_reset',
+            'create_password',
+            'verify_account',
+        ):
+            permissions_classes = (AllowAny,)
+
+        return [permission() for permission in permissions_classes]
+
+    @extend_schema(
+        responses={
+            200: inline_serializer(
+                name='AccountVerificationStatus',
+                fields={
+                    'success': serializers.BooleanField(default=True),
+                    'message': serializers.CharField(
+                        default='Account Verification Successful',
+                    ),
+                },
+            ),
+        },
+    )
+    @action(
+        methods=['POST'],
+        detail=False,
+        serializer_class=AccountVerificationSerializer,
+        url_path='verify-account',
+    )
+    def verify_account(self, request, pk=None):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            {'success': True, 'message': 'Account verification Successful!'},
+            status=status.HTTP_200_OK,
+        )
+
+
+class AuthViewSets(viewsets.GenericViewSet):
+    serializer_class = EmailSerializer
+    permission_classes = (IsAuthenticated,)
+
+    @action(
+        methods=['POST'],
+        detail=False,
+        serializer_class=
+    )

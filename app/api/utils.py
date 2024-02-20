@@ -4,10 +4,13 @@ import re
 import pyotp
 import logging
 
-from django.conf import settings
+from django.core.validators import RegexValidator
+
+# from django.conf import settings
 from rest_framework.permissions import BasePermission
 from rest_framework import serializers
-from twilio.rest import Client
+
+# from twilio.rest import Client
 
 from .enums import SystemRoleEnum
 
@@ -57,3 +60,8 @@ def generate_otp():
     totp = pyotp.TOTP(base64.b32encode(os.urandom(16)).decode('utf-8'))
     otp = totp.now()
     return otp
+
+
+class PhoneValidator(RegexValidator):
+    regex = r'^\+375(\s+)?\(?(17|29|33|44)\)?(\s+)?[0-9]{3}-?[0-9]{2}-?[0-9]{2}$'
+    message = 'Exactly 12 digits are required'

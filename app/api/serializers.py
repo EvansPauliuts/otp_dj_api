@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
+from django.db import transaction
 
 from api.models import PendingUser
 from .utils import is_admin_user, generate_otp, clean_phone
@@ -118,3 +119,49 @@ class OnboardUserSerializer(serializers.Serializer):
 
         send_phone_notification.delay(message_info)
         return user
+
+
+class EmailSerializer(serializers.Serializer):
+    email = serializers.EmailField(
+        required=True,
+    )
+
+
+class AccountVerificationSerializer(serializers.Serializer):
+    otp = serializers.CharField(
+        required=True,
+    )
+    phone = serializers.CharField(
+        required=True,
+        allow_blank=False,
+    )
+
+    def validate(self, attrs: dict):
+        phone_number: str = attrs.get('phone').strip().lower()
+        mobile: str = clean_phone(phone_number)
+
+        pending_user: PendingUser = PendingUser.objects.filter(
+            phone=mobile,
+            verification_code=attrs.get('otp'),
+        ).first()
+
+        if pending_user and pending_user.is_valid():
+            attrs['phone'] = mobile
+            attrs['password'] = pending_user.password
+            attrs['pending_user'] = pending_user
+        else:
+            raise serializers.ValidationError(
+                {'otp': 'Verification failed. Invalid OTP or Number'},
+            )
+
+        return super().validate(attrs)
+
+    @transaction.atomic
+    def create(self, validated_data: dict):
+        validated_data.pop('otp')
+        pending_user = validated_data.pop('pending_user')
+
+        User.objects.create_user_with_phone(**validated_data)
+        pending_user.delete()
+
+        return validated_data
