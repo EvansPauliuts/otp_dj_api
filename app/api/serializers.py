@@ -1,13 +1,15 @@
 from datetime import datetime, timezone
 
-from rest_framework import serializers
-from django.contrib.auth import get_user_model
+from rest_framework import serializers, exceptions
+from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.hashers import make_password
 from django.db import transaction
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from api.models import PendingUser
+from .models import PendingUser, User, Token
 from .utils import is_admin_user, generate_otp, clean_phone
 from .tasks import send_phone_notification
+from .enums import TokenEnum
 
 
 class ListUserSerializer(serializers.ModelSerializer):
@@ -165,3 +167,143 @@ class AccountVerificationSerializer(serializers.Serializer):
         pending_user.delete()
 
         return validated_data
+
+
+class InitiatePasswordResetSerializer(serializers.Serializer):
+    phone = serializers.CharField(
+        required=True,
+        allow_blank=False,
+    )
+
+    def validate(self, attrs: dict):
+        phone = attrs.get('phone')
+        strip_number = phone.lower().strip()
+        mobile = clean_phone(strip_number)
+        user = get_user_model().objects.filter(phone=mobile, is_active=True).first()
+
+        if not user:
+            raise serializers.ValidationError(
+                {
+                    'phone': 'Phone number not registered.',
+                }
+            )
+
+        attrs['phone'] = mobile
+        attrs['user'] = user
+
+        return super().validate(attrs)
+
+    def create(self, validated_data):
+        phone = validated_data.get('phone')
+        user = validated_data.get('user')
+        otp = generate_otp()
+
+        token, _ = Token.objects.update_or_create(
+            user=user,
+            token_type=TokenEnum.PASSWORD_RESET,
+            defaults={
+                'user': user,
+                'token_type': TokenEnum.PASSWORD_RESET,
+                'token': otp,
+                'created_at': datetime.now(timezone.utc),
+            },
+        )
+
+        message_info = {
+            'message': f'Password Reset!\nUse {otp} to reset your password.\nIt expires in 10 minutes',
+            'phone': phone,
+        }
+
+        send_phone_notification.delay(message_info)
+        return token
+
+
+class CreatePasswordFromResetOTPSerializer(serializers.Serializer):
+    otp = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+
+class CustomObtainTokenPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+        access_token = refresh.access_token
+        self.user.save_last_login()
+
+        data['refresh'] = str(refresh)
+        data['access'] = str(access_token)
+
+        return data
+
+    @classmethod
+    def get_token(cls, user: User):
+        if not user.verified:
+            raise exceptions.AuthenticationFailed(
+                'Account not verified.',
+                code='authentication',
+            )
+        token = super().get_token(user)
+        token.id = user.id
+
+        token['firstname'] = user.firstname
+        token['lastname'] = user.lastname
+        token["email"] = user.email
+        token["roles"] = user.roles
+
+        return token
+
+
+class PasswordChangeSerializer(serializers.Serializer):
+    old_password = serializers.CharField(
+        max_length=128,
+        required=False,
+    )
+    new_password = serializers.CharField(
+        max_length=128,
+        min_length=5,
+    )
+
+    def validate_old_password(self, value):
+        request = self.context['request']
+
+        if not request.user.check_password(value):
+            raise serializers.ValidationError(
+                'Old password is incorrect.',
+            )
+        return value
+
+    def save(self):
+        user: User = self.context['request'].user
+        new_password = self.validated_data['new_password']
+        user.set_password(new_password)
+
+        user.save(update_fields=['password'])
+
+
+class AuthTokenSerializer(serializers.Serializer):
+    email = serializers.CharField()
+    password = serializers.CharField(
+        style={'input_type': 'password'},
+        trim_whitespace=False,
+    )
+
+    def validate(self, attrs):
+        email = attrs.get('email')
+        password = attrs.get('password')
+
+        if email:
+            user = authenticate(
+                request=self.context.get('request'),
+                username=email.lower().strip(),
+                password=password,
+            )
+
+        if not user:
+            msg = 'Unable to authenticate with provided credentials'
+            raise serializers.ValidationError(
+                msg,
+                code='authentication',
+            )
+
+        attrs['user'] = user
+        return attrs
