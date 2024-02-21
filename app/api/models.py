@@ -15,10 +15,10 @@ from .managers import CustomUserManager
 class PendingUser(AuditableModel):
     phone = models.CharField(
         max_length=19,
-        validators=[PhoneValidator],
+        validators=[PhoneValidator()],
     )
     verification_code = models.CharField(
-        max_length=4,
+        max_length=8,
         blank=True,
         null=True,
     )

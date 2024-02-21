@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from rest_framework import viewsets, status, serializers
+from rest_framework import viewsets, status, serializers, filters
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema, inline_serializer
@@ -7,6 +7,7 @@ from rest_framework.decorators import action
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers import (
     ListUserSerializer,
@@ -20,6 +21,7 @@ from .serializers import (
     CustomObtainTokenPairSerializer,
     AuthTokenSerializer,
 )
+from .filters import UserFilter
 from .utils import is_admin_user, IsAdmin
 from .models import Token
 from .enums import TokenEnum
@@ -33,7 +35,27 @@ class UserViewSets(viewsets.ModelViewSet):
     queryset = get_user_model().objects.all()
     serializer_class = ListUserSerializer
     permission_classes = (IsAuthenticated,)
-    http_method_names = ('GET', 'POST', 'PATCH', 'DELETE')
+    # http_method_names = ('GET', 'POST', 'PATCH', 'DELETE')
+    http_method_names = ('get', 'post', 'patch', 'delete')
+    filter_backends = (
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    )
+    filterset_class = UserFilter
+    search_fields = (
+        'email',
+        'firstname',
+        'lastname',
+        'phone',
+    )
+    ordering_fields = (
+        'created_at',
+        'email',
+        'firstname',
+        'lastname',
+        'phone',
+    )
 
     def get_queryset(self):
         user = self.request.user
@@ -83,6 +105,9 @@ class UserViewSets(viewsets.ModelViewSet):
             {'success': True, 'message': 'OTP sent for verification!'},
             status=status.HTTP_200_OK,
         )
+
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 class AuthViewSets(viewsets.GenericViewSet):

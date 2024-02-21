@@ -155,8 +155,8 @@ STATIC_ROOT = 'static/'
 AUTH_USER_MODEL = 'api.User'
 
 
-WSGI_APPLICATION = "core.wsgi.application"
-ASGI_APPLICATION = "core.asgi.application"
+WSGI_APPLICATION = 'core.wsgi.application'
+ASGI_APPLICATION = 'core.asgi.application'
 CORS_ALLOW_ALL_ORIGINS = True
 LOGIN_URL = 'rest_framework:login'
 LOGOUT_URL = 'rest_framework:logout'

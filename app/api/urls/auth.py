@@ -12,7 +12,7 @@ app_name = 'auth'
 router = DefaultRouter()
 
 router.register('', AuthViewSets, basename='auth')
-router.register('change-password', PasswordChangeView, basename='password-change')
+router.register('change-password', PasswordChangeView, basename='password_change')
 
 urlpatterns = [
     path('login/', CustomObtainTokenPairView.as_view(), name='login'),
