@@ -1,4 +1,4 @@
-from core.conf.environ import config
+from core.conf.environ import env
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
@@ -10,7 +10,7 @@ REST_FRAMEWORK = {
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 
-if config('DEBUG'):
+if env('DEBUG'):
     REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'].append(
         'rest_framework.authentication.SessionAuthentication'
     )

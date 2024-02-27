@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from core.conf.environ import config
+from core.conf.environ import env
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
@@ -31,7 +31,7 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=14),
     'ALGORITHM': 'HS256',
-    'SIGNING_KEY': config('SECRET_KEY'),
+    'SIGNING_KEY': env('SECRET_KEY'),
     'AUDIENCE': None,
     'ISSUER': None,
     'AUTH_HEADER_TYPES': ('Bearer',),

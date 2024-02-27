@@ -1,3 +1,3 @@
-from core.conf.environ import config
+from core.conf.environ import env
 
-DEBUG = config('DEBUG')
+DEBUG = env('DEBUG')

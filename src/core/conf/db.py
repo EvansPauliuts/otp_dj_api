@@ -1,16 +1,16 @@
-from core.conf.environ import config
+from core.conf.environ import env
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT'),
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
     },
 }
 
 
-if not config('DEBUG', cast=bool):
+if not env('DEBUG', cast=bool):
     DATABASES['default']['CONN_MAX_AGE'] = 600
