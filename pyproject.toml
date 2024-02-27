@@ -1,0 +1,7 @@
+[tool.black]
+target-version = ['py312']
+
+[tool.isort]
+profile = 'black'
+remove_imports = 'from __future__ import annotations'
+force_single_line = true
