@@ -26,8 +26,8 @@ class PendingUserAdmin(
 
     @admin.action(description='Export to JSON')
     def export_as_json(self, request, queryset):
-        return super(ExportToJSONMixin).export_as_json(request, queryset)
+        return super().export_as_json(request, queryset)
 
     @admin.action(description='Export to CSV')
     def export_as_csv(self, request, queryset):
-        return super(ExportToCSVMixin).export_as_csv(request, queryset)
+        return super().export_as_csv(request, queryset)
