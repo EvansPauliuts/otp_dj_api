@@ -1,7 +1,0 @@
--r base.txt
-pytest-django
-pytest-xdist
-factory-boy
-pytest-factoryboy
-pytest-mock
-time-machine

@@ -1,4 +1,5 @@
 DC = docker-compose
+PC = pip-compile
 
 .PHONY: dev test urls pre
 
@@ -14,3 +15,11 @@ test:
 
 urls:
 	$(DC) exec api python3 manage.py show_urls
+
+.PHONY: req_dev peq_prod
+
+req_dev:
+	$(PC) ./requirements/dev.in
+
+req_prod:
+	$(PC) ./requirements/prod.in

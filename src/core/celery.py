@@ -1,24 +1,26 @@
 import os
 
 from celery import Celery
-from django.apps import AppConfig
-from django.apps import apps
 from django.conf import settings
 
-if not settings.configured:
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
+from core.conf.environ import env
 
-APP = Celery('core')
+__all__ = [
+    'celery',
+]
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
+
+celery = Celery('app')
+
+celery.conf.update(
+    broker_url=env('CELERY_BROKER_URL'),
+    beat_schedule={},
+)
+
+celery.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 
-class CeleryConfig(AppConfig):
-    name = 'core'
-    verbose_name = 'Celery Config'
-
-    def ready(self):
-        APP.config_from_object('django.conf:settings', namespace='CELERY')
-        installed_apps = [app_config.name for app_config in apps.get_app_configs()]
-        APP.autodiscover_tasks(installed_apps, force=True)
-
-    def tearDown(self):
-        pass
+@celery.task(bind=True, ignore_result=True)
+def debug_task(self):
+    print(f'Request: {self.request!r}')

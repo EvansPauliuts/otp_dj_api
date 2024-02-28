@@ -1,9 +1,9 @@
 from split_settings.tools import include
 
-from core.conf.environ import config
+from core.conf.environ import env
 
-SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG')
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env('DEBUG')
 
 
 include(
@@ -14,7 +14,7 @@ include(
     'conf/db.py',
     'conf/debug_toolbar.py',
     'conf/features.py',
-    'conf/healthchecks.py',
+    'conf/health_checks.py',
     'conf/http.py',
     'conf/i18n.py',
     'conf/installed_apps.py',

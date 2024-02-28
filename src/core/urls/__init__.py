@@ -11,6 +11,7 @@ api = [
 
 urlpatterns = [
     path('api/', include(api)),
+    path('healthchecks/', include('django_healthchecks.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path(
         'api/v1/doc/',

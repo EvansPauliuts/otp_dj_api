@@ -4,8 +4,8 @@ from django.core.management.commands.startapp import Command as BaseCommand
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        dir = settings.BASE_DIR.parent / 'apps' / options['name']
-        dir.mkdir(exist_ok=True)
-        options.update(directory=str(dir))
+        directory = settings.BASE_DIR / 'apps' / options['name']
+        directory.mkdir(exist_ok=True)
+        options.update(directory=str(directory))
 
         super().handle(**options)

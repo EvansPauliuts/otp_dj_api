@@ -9,9 +9,7 @@ RUN apt-get update \
     && apt-get install -y gcc python3-dev musl-dev libmagic1 libffi-dev netcat-traditional \
     && pip install Pillow
 
-COPY ./src/requirements ./requirements
-
-COPY ./src/requirements ./requirements
+COPY ./requirements/ ./requirements
 RUN pip install --upgrade pip
 RUN pip install -r ./requirements/dev.txt
 

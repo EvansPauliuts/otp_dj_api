@@ -1,2 +1,0 @@
-gunicorn
--r base.txt
