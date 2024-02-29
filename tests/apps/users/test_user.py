@@ -2,8 +2,7 @@ import pytest
 from django.urls import reverse
 
 from apps.users.models import PendingUser
-
-from .conftest import api_client_with_credentials
+from tests.conftest import api_client_with_credentials
 
 pytestmark = pytest.mark.django_db
 

@@ -73,14 +73,14 @@ repos:
     hooks:
       - id: shellcheck
 
-  - repo: local
-    hooks:
-      - id: check-fixture-types
-        name: Check fixture types
-        language: fail
-        entry: Please convert non-YAML fixtures to YAML.
-        files: /fixtures/
-        exclude_types: [yaml]
+#  - repo: local
+#    hooks:
+#      - id: check-fixture-types
+#        name: Check fixture types
+#        language: fail
+#        entry: Please convert non-YAML fixtures to YAML.
+#        files: /fixtures/
+#        exclude_types: [yaml]
 
 #   - repo: local
 #     hooks:

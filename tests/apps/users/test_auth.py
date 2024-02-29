@@ -12,8 +12,7 @@ from apps.users.common import TokenEnum
 from apps.users.models import PendingUser
 from apps.users.models import Token
 from apps.users.models import User
-
-from .conftest import api_client_with_credentials
+from tests.conftest import api_client_with_credentials
 
 pytestmark = pytest.mark.django_db
 
