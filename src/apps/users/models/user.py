@@ -11,12 +11,11 @@ from django.db import models
 
 # from apps.users.common import ROLE_CHOICE
 from apps.users.common import TOKEN_TYPE_CHOICE
+from apps.users.managers import CustomUserManager
+from apps.users.utils import PhoneValidator
 
 # from apps.users.common import SystemRoleEnum
 from core.models import TimeStampedModel
-
-from .managers import CustomUserManager
-from .utils import PhoneValidator
 
 
 class PendingUser(TimeStampedModel):
@@ -113,11 +112,3 @@ class Token(TimeStampedModel):
     def reset_user_password(self, password):
         self.user.set_password(password)
         self.user.save()
-
-
-class FileModel(models.Model):
-    file = models.FileField(upload_to='file/')
-
-
-class ImageModel(models.Model):
-    file = models.ImageField(upload_to='img/')
