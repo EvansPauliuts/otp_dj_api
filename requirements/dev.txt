@@ -66,6 +66,7 @@ django==5.0.2
     #   dj-database-url
     #   django-cors-headers
     #   django-debug-toolbar
+    #   django-extensions
     #   django-filter
     #   django-healthchecks
     #   django-linear-migrations
@@ -78,6 +79,8 @@ django-cors-headers==4.3.1
     # via -r requirements/prod.in
 django-debug-toolbar==4.3.0
     # via -r requirements/dev.in
+django-extensions==3.2.3
+    # via -r requirements/prod.in
 django-filter==23.5
     # via -r requirements/prod.in
 django-healthchecks==1.5.0
@@ -223,6 +226,7 @@ python-dateutil==2.8.2
     # via
     #   celery
     #   faker
+    #   time-machine
 python-dotenv==1.0.1
     # via -r requirements/prod.in
 pytz==2024.1
@@ -260,6 +264,8 @@ sqlparse==0.4.4
     #   django-debug-toolbar
 stack-data==0.6.3
     # via ipython
+time-machine==2.13.0
+    # via -r requirements/prod.in
 tornado==6.4
     # via flower
 traitlets==5.14.1

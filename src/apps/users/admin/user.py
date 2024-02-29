@@ -1,5 +1,3 @@
-from django.contrib.auth.admin import UserAdmin
-
 from apps.users.models import PendingUser
 from core.admin import ExportToCSVMixin
 from core.admin import ExportToJSONMixin
@@ -10,7 +8,7 @@ from core.admin import admin
 class PendingUserAdmin(
     ExportToJSONMixin,
     ExportToCSVMixin,
-    UserAdmin,
+    admin.ModelAdmin,
 ):
     list_display = (
         'id',
@@ -20,7 +18,7 @@ class PendingUserAdmin(
     list_per_page = 10
     list_filter = ('phone',)
     search_fields = ('phone',)
-    readonly_fields = ('verification_code',)
+    # readonly_fields = ('verification_code',)
     ordering = ('-created',)
     actions = ('export_as_json', 'export_as_csv')
 

@@ -26,3 +26,5 @@ django-version-checks==1.2.0
 gunicorn==21.2.0
 django-healthchecks==1.5.0
 pyotp==2.9.0
+django-extensions==3.2.3
+time-machine==2.13.0

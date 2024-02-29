@@ -6,6 +6,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'core.authentication.JWTAuthentication',
     ],
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }

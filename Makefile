@@ -1,7 +1,10 @@
 DC = docker-compose
 PC = pip-compile
 
-.PHONY: dev test urls pre
+.PHONY: dev test urls pre, test_local
+
+test_local:
+	pytest -rP -vv
 
 pre:
 	pre-commit run --all-files

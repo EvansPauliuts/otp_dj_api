@@ -5,11 +5,14 @@ from datetime import timezone
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
-from django.contrib.postgres.fields import ArrayField
+
+# from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
-from apps.users.common import ROLE_CHOICE
+# from apps.users.common import ROLE_CHOICE
 from apps.users.common import TOKEN_TYPE_CHOICE
+
+# from apps.users.common import SystemRoleEnum
 from core.models import TimeStampedModel
 
 from .managers import CustomUserManager
@@ -45,14 +48,11 @@ class PendingUser(TimeStampedModel):
         return True
 
 
-def default_role():
-    return ['CUSTOMER']
-
-
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(null=True, blank=True, unique=True)
     password = models.CharField(max_length=255, null=True)
+    username = models.CharField(max_length=255, unique=True)
     firstname = models.CharField(max_length=255, blank=True, null=True)
     lastname = models.CharField(max_length=255, blank=True, null=True)
     image = models.FileField(upload_to='users/', blank=True, null=True)
@@ -71,11 +71,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = CustomUserManager()
 
-    roles = ArrayField(
-        models.CharField(max_length=20, blank=True, choices=ROLE_CHOICE),
-        default=default_role,
-        size=6,
-    )
+    # roles = ArrayField(
+    #     models.CharField(max_length=20, blank=True, choices=ROLE_CHOICE),
+    #     default=SystemRoleEnum.CUSTOMER,
+    #     size=6,
+    # )
 
     class Meta:
         ordering = ('-created_at',)
