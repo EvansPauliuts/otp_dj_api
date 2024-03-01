@@ -1,6 +1,6 @@
 FROM python:3.12.1-slim
 
-WORKDIR /app
+WORKDIR /src
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -17,6 +17,6 @@ COPY ./docker/dev/entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
 
-COPY ./src /app
+COPY ./src /src
 
 ENTRYPOINT ["/entrypoint.sh"]

@@ -24,6 +24,7 @@ class TestUser:
         assert response.status_code == 200
 
         pending_user = PendingUser.objects.get(phone=data['phone'])
+
         message_info = {
             'message': f'Account Verification!\nYour OTP for BotoApp is '
             f'{pending_user.verification_code}'
@@ -75,7 +76,7 @@ class TestUser:
         user_factory,
         authenticate_user,
     ):
-        app_user = user_factory(first_name='First')
+        app_user = user_factory(firstname='First')
         user = authenticate_user(is_admin=True)
         token = user['token']
         data = {
@@ -93,7 +94,7 @@ class TestUser:
         user_factory,
         authenticate_user,
     ):
-        app_user = user_factory(first_name='First')
+        app_user = user_factory(firstname='First')
         user = authenticate_user(is_admin=True)
         token = user['token']
         api_client_with_credentials(token, api_client)
@@ -107,7 +108,7 @@ class TestUser:
         user_factory,
         authenticate_user,
     ):
-        app_user = user_factory(first_name='First')
+        app_user = user_factory(firstname='First')
         user = authenticate_user(is_admin=False)
         token = user['token']
         api_client_with_credentials(token, api_client)

@@ -28,3 +28,4 @@ django-healthchecks==1.5.0
 pyotp==2.9.0
 django-extensions==3.2.3
 time-machine==2.13.0
+django-environ==0.11.2

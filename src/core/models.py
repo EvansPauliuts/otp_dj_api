@@ -30,11 +30,7 @@ class DefaultModel(models.Model):
         abstract = True
 
     def __str__(self):
-        name = getattr(self, 'name', None)
-        if name is not None:
-            return str(self.name)
-
-        return super().__str__()
+        return getattr(self, 'name', super().__str__())
 
 
 class TimeStampedModel(DefaultModel, Timestamped):

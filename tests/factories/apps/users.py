@@ -9,6 +9,10 @@ from apps.users.models import User
 fake = Faker()
 
 
+def generate_username(*args, **kwargs):
+    return fake.profile(fields=['firstname', 'lastname'])
+
+
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
@@ -17,8 +21,9 @@ class UserFactory(factory.django.DjangoModelFactory):
     phone = factory.Sequence(lambda n: f'+375 44 444-44-4{n}')
     password = factory.PostGenerationMethodCall('set_password', 'hello@@@111')
     verified = 'True'
-    first_name = fake.name()
-    last_name = fake.name()
+    firstname = fake.name()
+    lastname = fake.name()
+    username = factory.LazyAttribute(generate_username)
 
 
 class SuperAdminUserFactory(UserFactory):

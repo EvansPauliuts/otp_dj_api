@@ -1,18 +1,18 @@
-import os
-
-import dotenv
+import environ
 
 from core.conf.boilerplate import BASE_DIR
+
+env = environ.Env(
+    DEBUG=(bool, False),
+    CI=(bool, False),
+)
 
 env_path = BASE_DIR / '.env'
 
 if env_path.exists():
-    dotenv.load_dotenv(
-        dotenv_path=env_path,
-    )
+    env.read_env(env_path)
 
-env = os.getenv
 
 __all__ = [
-    env,
+    'env',
 ]

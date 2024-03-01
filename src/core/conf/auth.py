@@ -31,7 +31,7 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
     'ALGORITHM': 'HS256',
-    'SIGNING_KEY': env('SECRET_KEY'),
+    'SIGNING_KEY': env('SECRET_KEY', cast=str),
     'AUDIENCE': None,
     'ISSUER': None,
     'AUTH_HEADER_TYPES': ('Bearer',),

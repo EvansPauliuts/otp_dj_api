@@ -1,7 +1,7 @@
 from core.conf.boilerplate import BASE_DIR
 from core.conf.environ import env
 
-if int(env('DB_USE_DOCKER')):
+if env('DB_USE_DOCKER', cast=int):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',

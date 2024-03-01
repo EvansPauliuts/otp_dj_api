@@ -16,6 +16,12 @@ celery = Celery('app')
 
 celery.conf.update(
     broker_url=env('CELERY_BROKER_URL'),
+    task_always_eager=env('CELERY_ALWAYS_EAGER', cast=bool, default=settings.DEBUG),
+    task_eager_propagates=True,
+    task_ignore_result=True,
+    task_store_errors_even_if_ignored=True,
+    task_acks_late=True,
+    timezone=env('TIME_ZONE', cast=str, default='Europe/Moscow'),
     beat_schedule={
         'delete-old-activation-codes': {
             'task': 'apps.tasks.delete_old_activation_codes',

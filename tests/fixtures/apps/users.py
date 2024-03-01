@@ -57,7 +57,7 @@ def authenticate_user(
         }
 
         response = api_client.post(url, data, format='json')
-        token = response.json()['access']
+        token = response.json()['success']
         return {
             'token': token,
             'user_email': active_user.email,

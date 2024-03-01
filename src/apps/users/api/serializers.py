@@ -119,7 +119,7 @@ class OnboardUserSerializer(serializers.Serializer):
                 'phone': phone_number,
                 'verification_code': otp,
                 'password': make_password(validated_data.get('password')),
-                'created_at': datetime.now(timezone.utc),
+                'created': datetime.now(timezone.utc),
             },
         )
 
@@ -215,7 +215,7 @@ class InitiatePasswordResetSerializer(serializers.Serializer):
                 'user': user,
                 'token_type': TokenEnum.PASSWORD_RESET,
                 'token': otp,
-                'created_at': datetime.now(timezone.utc),
+                'created': datetime.now(timezone.utc),
             },
         )
 

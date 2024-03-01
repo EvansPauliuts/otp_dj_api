@@ -7,7 +7,7 @@ import time_machine
 from django.urls import reverse
 from rest_framework import status
 
-# from apps.users.common import SystemRoleEnum
+from apps.users.common import SystemRoleEnum
 from apps.users.common import TokenEnum
 from apps.users.models import PendingUser
 from apps.users.models import Token
@@ -40,7 +40,7 @@ class TestAuthEndpoints:
 
         return_json = response.json()
         assert 'refresh' in return_json
-        assert 'access' in return_json
+        assert 'success' in return_json
 
     def test_deny_login_to_inactive_user(
         self,
@@ -168,7 +168,7 @@ class TestAuthEndpoints:
         user_obj = User.objects.get(phone=pending_user.phone)
         assert user_obj.verified is True
         assert user_obj.is_active is True
-        # assert user_obj.roles == [SystemRoleEnum.CUSTOMER]
+        assert user_obj.roles == [SystemRoleEnum.CUSTOMER]
 
     def test_deny_verify_account_expired_otp(self, api_client):
         pending_user = PendingUser.objects.create(

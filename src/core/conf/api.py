@@ -11,7 +11,7 @@ REST_FRAMEWORK = {
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 
-if env('DEBUG'):
+if env('DEBUG', cast=bool):
     REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'].append(
         'rest_framework.authentication.SessionAuthentication'
     )
