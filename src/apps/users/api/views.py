@@ -1,4 +1,6 @@
 from django.contrib.auth import get_user_model
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from drf_spectacular.utils import inline_serializer
@@ -18,6 +20,7 @@ from apps.users.models import FileModel
 from apps.users.models import ImageModel
 from apps.users.models import Token
 from apps.users.utils import IsAdmin
+from apps.users.utils import delete_cache
 from apps.users.utils import is_admin_user
 from core.permissions import AllowAny
 from core.permissions import IsAuthenticated
@@ -67,6 +70,7 @@ class UserViewSets(viewsets.ModelViewSet):
         'lastname',
         'phone',
     )
+    CACHE_KEY_PREFIX = 'user-view'
 
     def get_queryset(self):
         user = self.request.user
@@ -112,11 +116,15 @@ class UserViewSets(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+        delete_cache(self.CACHE_KEY_PREFIX)
         return Response(
             {'success': True, 'message': 'OTP sent for verification!'},
             status=status.HTTP_200_OK,
         )
 
+    @method_decorator(
+        cache_page(20, key_prefix=CACHE_KEY_PREFIX),
+    )
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 

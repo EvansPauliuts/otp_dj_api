@@ -15,6 +15,8 @@ services:
     env_file:
       - ./.env
     restart: unless-stopped
+    environment:
+      - REDIS_HOST=redis
     depends_on:
       - db
       - rabbitmq
@@ -93,6 +95,13 @@ services:
       - rabbitmq
     networks:
       - celery-network
+
+  redis:
+    image: 'redis:alpine'
+    restart: always
+    container_name: redis
+    ports:
+      - 6379:6379
 
 volumes:
   pg_data:

@@ -4,6 +4,8 @@ import os
 import re
 
 import pyotp
+from django.conf import settings
+from django.core.cache import cache
 from django.core.validators import RegexValidator
 from rest_framework import serializers
 from rest_framework.permissions import BasePermission
@@ -61,3 +63,11 @@ def generate_otp():
 class PhoneValidator(RegexValidator):
     regex = r'^\+375(\s+)?\(?(17|29|33|44)\)?(\s+)?[0-9]{3}-?[0-9]{2}-?[0-9]{2}$'
     message = 'Exactly 12 digits are required'
+
+
+def delete_cache(key_prefix: str):
+    keys_pattern = (
+        f'views.decorators.cache.cache_*.{key_prefix}.*'
+        f'.{settings.LANGUAGE_CODE}.{settings.TIME_ZONE}'
+    )
+    cache.delete_pattern(keys_pattern)

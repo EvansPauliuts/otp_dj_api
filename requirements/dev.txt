@@ -70,6 +70,7 @@ django==5.0.2
     #   django-filter
     #   django-healthchecks
     #   django-linear-migrations
+    #   django-localflavor
     #   django-rich
     #   django-version-checks
     #   djangorestframework
@@ -88,6 +89,8 @@ django-filter==23.5
 django-healthchecks==1.5.0
     # via -r requirements/prod.in
 django-linear-migrations==2.12.0
+    # via -r requirements/prod.in
+django-localflavor==4.0
     # via -r requirements/prod.in
 django-rich==1.8.0
     # via -r requirements/prod.in
@@ -231,6 +234,8 @@ python-dateutil==2.8.2
     #   time-machine
 python-dotenv==1.0.1
     # via -r requirements/prod.in
+python-stdnum==1.19
+    # via django-localflavor
 pytz==2024.1
     # via
     #   djangorestframework

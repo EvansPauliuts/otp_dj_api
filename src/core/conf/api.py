@@ -9,6 +9,7 @@ REST_FRAMEWORK = {
         # 'core.authentication.JWTAuthentication',
     ],
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+    'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',),
 }
 
 if env('DEBUG', cast=bool):
