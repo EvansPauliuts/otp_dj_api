@@ -20,6 +20,7 @@ services:
     depends_on:
       - db
       - rabbitmq
+      - redis
     networks:
       - celery-network
 

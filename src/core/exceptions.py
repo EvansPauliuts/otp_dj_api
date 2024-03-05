@@ -4,3 +4,7 @@
 
 class AppServiceException(Exception):
     pass
+
+
+class ServiceException(Exception):
+    pass
