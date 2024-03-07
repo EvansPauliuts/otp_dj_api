@@ -6,10 +6,7 @@ class ViewAllUsersPermissions(permissions.BasePermission):
         if view.action == 'retrieve':
             return True
 
-        return (
-            request.user.has_perm('accounts.view_all_users')
-            or request.user.is_superuser
-        )
+        return request.user.has_perm('accounts.view_all_users') or request.user.is_superuser
 
 
 class OwnershipPermissions(permissions.BasePermission):

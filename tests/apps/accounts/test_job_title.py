@@ -80,14 +80,14 @@ class TestJobTitle:
 
     def test_job_expand_is_true(self, api_client, job_title):
         response = api_client.get(
-            reverse('users:job_titles-list') + '?expand_users=true'
+            reverse('users:job_titles-list') + '?expand_users=true',
         )
         assert response.status_code == status.HTTP_200_OK
         assert response.data['results'][0]['users'] is not None
 
     def test_job_expand_is_false(self, api_client, job_title):
         response = api_client.get(
-            reverse('users:job_titles-list') + '?expand_users=false'
+            reverse('users:job_titles-list') + '?expand_users=false',
         )
         assert response.status_code == status.HTTP_200_OK
         assert 'users' not in response.data['results'][0]

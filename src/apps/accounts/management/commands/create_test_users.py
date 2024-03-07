@@ -4,8 +4,6 @@ import string
 from django.db import transaction
 from rich.progress import Progress
 from core.utils.helpers import get_or_create_business_unit
-
-# from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
 
 from apps.accounts.models import User, JobTitle, UserProfile, Organization
@@ -19,8 +17,7 @@ class Command(BaseCommand):
         business_unit = get_or_create_business_unit(bs_name='Transportation')
 
         system_org_answer = input(
-            "What is the SCAC of organization you'd like "
-            'to add the test users to? (Scac Code) '
+            "What is the SCAC of organization you'd like to add the test users to? (Scac Code) ",
         )
         number_of_users_answer = input('How many test users would you like to create? ')
 
@@ -28,17 +25,17 @@ class Command(BaseCommand):
             system_org = Organization.objects.get(scac_code=system_org_answer)
         except Organization.DoesNotExist as e:
             raise CommandError(
-                f'Organization {system_org_answer} does not exist.'
+                f'Organization {system_org_answer} does not exist.',
             ) from e
 
         try:
             number_of_users = int(number_of_users_answer)
         except ValueError as e:
             raise CommandError(
-                f'{number_of_users_answer} is not a valid number.'
+                f'{number_of_users_answer} is not a valid number.',
             ) from e
 
-        job_title, created = JobTitle.objects.get_or_create(
+        job_title, _ = JobTitle.objects.get_or_create(
             name='Test User',
             organization=system_org,
             business_unit=business_unit,
@@ -47,13 +44,15 @@ class Command(BaseCommand):
 
         usernames = [f'testuser-{i}' for i in range(number_of_users)]
         existing_users = User.objects.filter(username__in=usernames).values_list(
-            'username', flat=True
+            'username',
+            flat=True,
         )
 
         new_users = []
         with Progress() as progress:
             task = progress.add_task(
-                '[cyan]Creating test users...', total=number_of_users
+                '[cyan]Creating test users...',
+                total=number_of_users,
             )
 
             for i in range(number_of_users):
@@ -63,7 +62,7 @@ class Command(BaseCommand):
 
                 email = f'testuser-{i}@dev.app'
                 password = 'testuser'.join(
-                    random.choices(string.ascii_uppercase + string.digits, k=8)
+                    random.choices(string.ascii_uppercase + string.digits, k=8),
                 )
 
                 new_user = User(
@@ -82,7 +81,8 @@ class Command(BaseCommand):
 
         with Progress() as progress:
             task = progress.add_task(
-                '[cyan]Creating user profiles...', total=number_of_users
+                '[cyan]Creating user profiles...',
+                total=number_of_users,
             )
 
             for i in range(number_of_users):
@@ -110,5 +110,5 @@ class Command(BaseCommand):
         UserProfile.objects.bulk_create(new_profiles)
 
         self.stdout.write(
-            self.style.SUCCESS(f'Successfully created {number_of_users} test users.')
+            self.style.SUCCESS(f'Successfully created {number_of_users} test users.'),
         )

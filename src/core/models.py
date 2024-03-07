@@ -26,9 +26,9 @@ class Timestamped(models.Model):
 
     @property
     def changed(self):
-        return True if self.updated else False
+        return bool(self.updated)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # noqa: DJ012
         if self.pk:
             self.updated = timezone.now()
         return super().save(*args, **kwargs)
@@ -102,7 +102,7 @@ class ChoiceField(CharField):
                     hint='Add a `choice` attribute to the ChoiceField.',
                     obj=self,
                     id='fields.E120',
-                )
+                ),
             ]
         return []
 

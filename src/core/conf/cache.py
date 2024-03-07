@@ -17,7 +17,6 @@ if env('DB_USE_DOCKER', cast=bool):
             'LOCATION': env('REDIS_URL'),
             'OPTIONS': {
                 'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-                # 'PREFIX': 'default',
             },
         },
         'sessions': {
@@ -33,19 +32,19 @@ if env('DB_USE_DOCKER', cast=bool):
                 },
             },
         },
-        # 'celery': {
-        #     'BACKEND': 'django_redis.cache.RedisCache',
-        #     'LOCATION': env('REDIS_URL'),
-        #     'OPTIONS': {
-        #         'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        #         'PREFIX': 'celery',
-        #         'PARSER_CLASS': 'redis.connection.HiredisParser',
-        #         'CONNECTION_POOL_KWARGS': {
-        #             'max_connections': 100,
-        #             'retry_on_timeout': True,
-        #         },
-        #     },
-        # },
+        'celery': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': env('REDIS_URL'),
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+                'PREFIX': 'celery',
+                'PARSER_CLASS': 'redis.connection.HiredisParser',
+                'CONNECTION_POOL_KWARGS': {
+                    'max_connections': 100,
+                    'retry_on_timeout': True,
+                },
+            },
+        },
         'idempotency': {
             'BACKEND': 'django_redis.cache.RedisCache',
             'LOCATION': env('REDIS_URL'),

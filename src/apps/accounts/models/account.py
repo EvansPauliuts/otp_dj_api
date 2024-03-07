@@ -23,6 +23,7 @@ from django.contrib.auth.models import (
 )
 from django.db.models.functions import Lower
 
+from apps.accounts import tasks, services
 from apps.accounts.utils import PhoneValidator
 from apps.accounts.validators import validate_org_timezone
 
@@ -61,7 +62,7 @@ class CustomGroup(TimeStampedModel):
                 Lower('name'),
                 'organization',
                 name='unique_group_organization',
-            )
+            ),
         ]
 
     def __str__(self):
@@ -191,11 +192,7 @@ class User(AbstractBaseUser, CustomPermissionMixin):
         choices=TimezoneChoices,
         validators=[validate_org_timezone],
     )
-    session_key = models.CharField(
-        max_length=40,
-        blank=True,
-        null=True,
-    )
+    session_key = models.CharField(max_length=40, blank=True)
     objects = UserManager()
 
     USERNAME_FIELD = 'username'
@@ -271,8 +268,6 @@ class UserProfile(GenericModel):
         return self.user.username
 
     def save(self, *args, **kwargs):
-        from apps.accounts import tasks
-
         self.first_name = self.first_name.title()
         self.last_name = self.last_name.title()
 
@@ -280,7 +275,7 @@ class UserProfile(GenericModel):
 
         if self.profile_picture and not self.thumbnail:
             transaction.on_commit(
-                lambda: tasks.generate_thumbnail_task.delay(profile_id=str(self.id))
+                lambda: tasks.generate_thumbnail_task.delay(profile_id=str(self.id)),
             )
 
     def get_absolute_url(self):
@@ -356,8 +351,6 @@ class Token(models.Model):
         return f'{self.key[:10]} ({self.user.username})'
 
     def save(self, *args, **kwargs) -> None:
-        from apps.accounts import services
-
         if not self.key:
             self.key = services.generate_key()
 

@@ -44,7 +44,7 @@ class Command(BaseCommand):
 
     @staticmethod
     def create_system_organization(organization_name, bs_unit):
-        organization, created = Organization.objects.get_or_create(
+        organization, _ = Organization.objects.get_or_create(
             name=organization_name,
             business_unit=bs_unit,
             defaults={
@@ -55,7 +55,7 @@ class Command(BaseCommand):
 
     @staticmethod
     def create_system_job_title(organization, bs_unit):
-        job_title, created = JobTitle.objects.get_or_create(
+        job_title, _ = JobTitle.objects.get_or_create(
             organization=organization,
             name='System',
             business_unit=bs_unit,
@@ -113,5 +113,5 @@ class Command(BaseCommand):
         )
 
         self.stdout.write(
-            self.style.SUCCESS('System user account created. Successfully')
+            self.style.SUCCESS('System user account created. Successfully'),
         )

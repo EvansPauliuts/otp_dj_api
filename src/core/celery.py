@@ -26,7 +26,7 @@ celery.conf.update(
         'delete-old-activation-codes': {
             'task': 'apps.tasks.delete_old_activation_codes',
             'schedule': crontab(minute='*/2'),
-        }
+        },
     },
 )
 

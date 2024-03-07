@@ -11,6 +11,6 @@ class UserBackend(ModelBackend):
                 .get(pk__exact=user_id)
             )
         except User.DoesNotExist:
-            return
+            return None
 
         return user if self.user_can_authenticate(user) else None

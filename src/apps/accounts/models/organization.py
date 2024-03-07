@@ -9,8 +9,6 @@ from apps.accounts.validators import validate_org_timezone
 
 from .business import BusinessUnit
 
-# from phonenumber_field.modelfields import PhoneNumberField
-
 
 class Organization(TimeStampedModel):
     class OrganizationType(models.TextChoices):

@@ -41,7 +41,6 @@ class UserViewSets(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = ListUserSerializer
     permission_classes = (IsAuthenticated,)
-    # http_method_names = ('GET', 'POST', 'PATCH', 'DELETE')
     http_method_names = ('get', 'post', 'patch', 'delete')
     filter_backends = (
         DjangoFilterBackend,
@@ -72,7 +71,7 @@ class UserViewSets(viewsets.ModelViewSet):
         return super().get_queryset().filter(id=user.id)
 
     def get_serializer_class(self):
-        if self.action in ('create',):
+        if self.action == 'create':
             return OnboardUserSerializer
         if self.action in ('partial_update', 'update'):
             return UpdateUserSerializer
@@ -81,11 +80,11 @@ class UserViewSets(viewsets.ModelViewSet):
     def get_permissions(self):
         permissions_classes = self.permission_classes
 
-        if self.action in ('create',):
+        if self.action == 'create':
             permissions_classes = (AllowAny,)
         elif self.action in ('list', 'retrieve', 'partial_update', 'update'):
             permissions_classes = (IsAuthenticated,)
-        elif self.action in ('destroy',):
+        elif self.action == 'destroy':
             permissions_classes = (IsAdmin,)
 
         return [permission() for permission in permissions_classes]
@@ -100,7 +99,7 @@ class UserViewSets(viewsets.ModelViewSet):
                         default='OTP sent for verification',
                     ),
                 },
-            )
+            ),
         },
         description='Sign Up witha validate phone number',
     )
@@ -162,7 +161,8 @@ class AuthViewSets(viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
 
         token: Token = Token.objects.filter(
-            token=request.data['otp'], token_type=TokenEnum.PASSWORD_RESET
+            token=request.data['otp'],
+            token_type=TokenEnum.PASSWORD_RESET,
         ).first()
 
         if not token or not token.is_valid():
@@ -188,7 +188,7 @@ class AuthViewSets(viewsets.GenericViewSet):
                 fields={
                     'success': serializers.BooleanField(default=True),
                     'message': serializers.CharField(
-                        default='Account Verification Successful'
+                        default='Account Verification Successful',
                     ),
                 },
             ),

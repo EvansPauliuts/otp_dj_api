@@ -17,9 +17,7 @@ class Command(BaseCommand):
                 db_up = True
             except (Psycopg2Error, OperationalError):
                 self.stdout.write(
-                    self.style.WARNING(
-                        f'Database unavailable, waiting {delay} second(s)...'
-                    )
+                    self.style.WARNING(f'Database unavailable, waiting {delay} second(s)...'),
                 )
                 time.sleep(delay)
                 delay = min(60, delay * 2)

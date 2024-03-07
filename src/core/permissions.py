@@ -25,7 +25,7 @@ class CustomObjectPermissions(DjangoModelPermissions):
 
 __all__ = [
     'AllowAny',
+    'CustomObjectPermissions',
     'IsAuthenticated',
     'SuperUserOnly',
-    'CustomObjectPermissions',
 ]

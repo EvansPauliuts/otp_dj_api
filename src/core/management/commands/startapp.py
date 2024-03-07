@@ -11,8 +11,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         directory = settings.BASE_DIR / 'src' / 'apps' / options['name']
-        # if have folder exists
-        # directory.mkdir(exist_ok=True)
         if directory.exists():
             raise CommandError('Is file had already been')
 

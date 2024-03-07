@@ -39,8 +39,7 @@ def generate_thumbnail(
 
     except* UnidentifiedImageError as exc:
         log.error(
-            f'Uploaded image for {user_profile.user.username} '
-            f'is invalid. Exception: {exc}'
+            f'Uploaded image for {user_profile.user.username} is invalid. Exception: {exc}',
         )
         raise ValidationError(
             {'profile_picture': 'The image is invalid. Please try again.'},

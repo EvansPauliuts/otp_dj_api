@@ -14,8 +14,8 @@ class TabularInline(admin.TabularInline):
 
 
 __all__ = [
-    'admin',
     'ModelAdmin',
     'StackedInline',
     'TabularInline',
+    'admin',
 ]

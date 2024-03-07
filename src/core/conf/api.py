@@ -39,18 +39,8 @@ REST_FRAMEWORK = {
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
 }
 
-
-#
-# if env('DEBUG', cast=bool):
-#     REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'].append(
-#         'rest_framework.authentication.SessionAuthentication'
-#     )
-
-
 SWAGGER_SETTINGS = {
-    'SECURITY_DEFINITIONS': {
-        'Bearer': {'type': 'apiKey', 'name': 'Authorization', 'in': 'header'}
-    },
+    'SECURITY_DEFINITIONS': {'Bearer': {'type': 'apiKey', 'name': 'Authorization', 'in': 'header'}},
 }
 
 

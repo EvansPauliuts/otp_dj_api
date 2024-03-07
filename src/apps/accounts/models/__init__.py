@@ -6,13 +6,13 @@ from .organization import Organization
 
 __all__ = [
     'BusinessUnit',
+    'CustomGroup',
     'Department',
     'Depot',
+    'JobTitle',
     'Organization',
+    'Token',
+    'User',
     'UserFavorite',
     'UserProfile',
-    'User',
-    'JobTitle',
-    'Token',
-    'CustomGroup',
 ]

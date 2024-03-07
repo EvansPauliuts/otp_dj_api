@@ -17,7 +17,7 @@ class BusinessUnitFactory(factory.django.DjangoModelFactory):
 
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
-        business_unit, created = BusinessUnit.objects.get_or_create(
+        business_unit, _ = BusinessUnit.objects.get_or_create(
             name='TEST',
         )
         return business_unit
@@ -29,10 +29,10 @@ class OrganizationFactory(factory.django.DjangoModelFactory):
 
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
-        business_unit, b_created = BusinessUnit.objects.get_or_create(
+        business_unit, _ = BusinessUnit.objects.get_or_create(
             name='TEST',
         )
-        organization, o_created = Organization.objects.get_or_create(
+        organization, _ = Organization.objects.get_or_create(
             name='Random Company',
             scac_code='TEST',
             business_unit=business_unit,
@@ -60,16 +60,16 @@ class UserFactory(factory.django.DjangoModelFactory):
 
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
-        business_unit, b_created = BusinessUnit.objects.get_or_create(
+        business_unit, _ = BusinessUnit.objects.get_or_create(
             name='TEST',
         )
-        organization, o_created = Organization.objects.get_or_create(
+        organization, _ = Organization.objects.get_or_create(
             name='Random Company',
             scac_code='TEST',
             business_unit=business_unit,
         )
 
-        user, created = User.objects.get_or_create(
+        user, _ = User.objects.get_or_create(
             username=kwargs['username'],
             password='<PASSWORD>',
             email=kwargs['email'],
@@ -106,7 +106,7 @@ class TokenFactory(factory.django.DjangoModelFactory):
 
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
-        token, created = Token.objects.get_or_create(
+        token, _ = Token.objects.get_or_create(
             user=kwargs['user'],
             key=kwargs['key'],
         )

@@ -52,7 +52,7 @@ class BusinessUnit(TimeStampedModel):
             models.UniqueConstraint(
                 Lower('entity_key'),
                 name='unique_business_unit_entity_key',
-            )
+            ),
         ]
 
     def __str__(self):

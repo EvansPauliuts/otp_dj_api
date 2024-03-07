@@ -14,8 +14,4 @@ class TestUser:
         assert response.status_code == status.HTTP_200_OK
 
     def test_get_by_id(self, api_client, user_api):
-        print(user_api)
-        # response = api_client.get(
-        #     f'{self.api_endpoint}{user_api.data["id"]}', format='json'
-        # )
-        # assert response.status_code == status.HTTP_200_OK
+        pass

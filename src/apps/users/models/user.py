@@ -20,11 +20,9 @@ class PendingUser(TimeStampedModel):
     verification_code = models.CharField(
         max_length=8,
         blank=True,
-        null=True,
     )
     password = models.CharField(
         max_length=255,
-        null=True,
     )
 
     def __str__(self):
@@ -44,10 +42,10 @@ class PendingUser(TimeStampedModel):
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(null=True, blank=True, unique=True)
-    password = models.CharField(max_length=255, null=True)
+    password = models.CharField(max_length=255)
     username = models.CharField(max_length=255)
-    firstname = models.CharField(max_length=255, blank=True, null=True)
-    lastname = models.CharField(max_length=255, blank=True, null=True)
+    firstname = models.CharField(max_length=255, blank=True)
+    lastname = models.CharField(max_length=255, blank=True)
     image = models.FileField(upload_to='users/', blank=True, null=True)
     phone = models.CharField(max_length=30, unique=True, blank=True, null=True)
     is_locked = models.BooleanField(default=False)
@@ -92,7 +90,7 @@ class Token(TimeStampedModel):
     token_type = models.CharField(max_length=100, choices=TOKEN_TYPE_CHOICE)
 
     def __str__(self):
-        return f'{str(self.user)} {self.token}'
+        return f'{self.user!s} {self.token}'
 
     def is_valid(self):
         lifespan_in_seconds = float(settings.TOKEN_LIFESPAN * 60)

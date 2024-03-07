@@ -75,7 +75,9 @@ class TestAuthEndpoints:
             'phone': active_user.phone,
         }
         response = api_client.post(
-            self.initiate_password_reset_url, data, format='json'
+            self.initiate_password_reset_url,
+            data,
+            format='json',
         )
         assert response.status_code == status.HTTP_200_OK
 
@@ -100,7 +102,9 @@ class TestAuthEndpoints:
             'phone': '+375 44 444-44-44',
         }
         response = api_client.post(
-            self.initiate_password_reset_url, data, format='json'
+            self.initiate_password_reset_url,
+            data,
+            format='json',
         )
         assert response.status_code == 400
 
@@ -207,7 +211,9 @@ class TestAuthEndpoints:
             'new_password': 'new_pass_me',
         }
         response = api_client.post(
-            self.create_password_reset_otp_url, data, format='json'
+            self.create_password_reset_otp_url,
+            data,
+            format='json',
         )
         assert response.status_code == status.HTTP_200_OK
 
@@ -230,6 +236,8 @@ class TestAuthEndpoints:
             'new_password': 'new_pass_me',
         }
         response = api_client.post(
-            self.create_password_reset_otp_url, data, format='json'
+            self.create_password_reset_otp_url,
+            data,
+            format='json',
         )
         assert response.status_code == status.HTTP_400_BAD_REQUEST

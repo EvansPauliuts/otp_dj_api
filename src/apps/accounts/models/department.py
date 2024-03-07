@@ -37,7 +37,7 @@ class Depot(models.Model):
                 Lower('name'),
                 'organization',
                 name='unique_depot_name_organization',
-            )
+            ),
         ]
 
     def __str__(self):

@@ -11,7 +11,6 @@ from django.contrib.auth.models import Permission
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 
-# from apps.accounts.models import User
 from apps.accounts.models import Token, JobTitle, CustomGroup, UserFavorite
 from apps.accounts.permissions import OwnershipPermissions
 from apps.accounts.api.serializers import (
@@ -88,8 +87,8 @@ class UserViewSet(viewsets.ModelViewSet):
         else:
             queryset = (
                 self.queryset.filter(
-                    # organization_id=self.request.user.organization_id,
-                    # organization=self.request.user.organization,
+                    organization_id=self.request.user.organization_id,
+                    organization=self.request.user.organization,
                     id=user.id,
                 )
                 .select_related('profiles')
@@ -195,7 +194,7 @@ class JobTitleViewSet(viewsets.ModelViewSet):
                     queryset=User.objects.filter(
                         organization_id=self.request.user.organization_id,
                     ).only('username', 'organization_id'),
-                )
+                ),
             )
 
         return queryset

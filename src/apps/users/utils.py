@@ -13,7 +13,6 @@ from rest_framework.permissions import BasePermission
 from apps.users.common import SystemRoleEnum
 
 logger = logging.getLogger(__name__)
-# client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
 
 
 def is_admin_user(user):
@@ -31,33 +30,25 @@ class IsAdmin(BasePermission):
 
 def send_sms(message, phone):
     logger.info({'body': message, 'from': 'm', 'to': phone})
-    # client.messages.create(
-    #     body=message,
-    #     from_=settings.TWILIO_PHONE_NUMBER,
-    #     to=phone,
-    # )
-    return
 
 
 def clean_phone(number):
     number_pattern = re.compile(
-        r'^\+375(\s+)?\(?(17|29|33|44)\)?(\s+)?[0-9]{3}-?[0-9]{2}-?[0-9]{2}$'
+        r'^\+375(\s+)?\(?(17|29|33|44)\)?(\s+)?[0-9]{3}-?[0-9]{2}-?[0-9]{2}$',
     )
     result = number_pattern.match(number)
     if result:
         return number
-    else:
-        raise serializers.ValidationError(
-            {
-                'phone': 'Incorrect phone number.',
-            }
-        )
+    raise serializers.ValidationError(
+        {
+            'phone': 'Incorrect phone number.',
+        },
+    )
 
 
 def generate_otp():
     totp = pyotp.TOTP(base64.b32encode(os.urandom(16)).decode('utf-8'))
-    otp = totp.now()
-    return otp
+    return totp.now()
 
 
 class PhoneValidator(RegexValidator):

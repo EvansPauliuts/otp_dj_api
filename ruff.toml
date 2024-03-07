@@ -1,3 +1,5 @@
+target-version = "py312"
+extend-exclude = ["src/apps/*/migrations/*", "static", "staticfilles", "templates"]
 include = ["src/**/*.py", "scripts/**/*.py", "tests/**/*.py"]
 exclude = [
     ".git",
@@ -8,23 +10,68 @@ exclude = [
     ".venv",
     "venv",
 ]
-line-length = 88
+line-length = 100
 indent-width = 4
-target-version = "py312"
+fix = true
 
 [lint]
-extend-select = [
-  "E501",
-  "D",
-  "E",
-  "F",
-  "UP",
-  "B",
-  "SIM",
-  "I",
+preview = true
+select = [
+    "F",     # Pyflakes
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "C90",   # mccabe
+    "I",     # isort
+    "N",     # pep8-naming
+    "UP",    # pyupgrade
+    "PL",    # pylint
+    "PERF",  # perflint
+    "S",     # flake8-bandit
+    "FBT",   # flake8-boolean-trap
+    "B",     # flake8-bugbear
+    "DJ",    # flake8-django
+    "ICN",   # flake8-import-conventions
+    "ASYNC", # flake8-async
+    "C4",    # flake8-comprehensions
+#    "Q",     # flake8-quotes
+    "RET",   # flake8-return
+    "SIM",   # flake8-simplify
+    "TID",   # flake8-tidy-imports
+    "TCH",   # flake8-type-checking
+    "PTH",   # flake8-use-pathlib
+    "INT",   # flake8-gettext
+    "SLOT",  # flake8-slots
+    "SLF",   # flake8-self
+    "RSE",   # flake8-raise
+    "PYI",   # flake8-pyi"
+    "PIE",   # flake8-pie"
+    "ISC",   # flake8-implicit-str-concat
+    "A",     # flake8-builtins
+    "COM",   # flake8-commas
+    "T10",   # flake8-debugger
+    "YTT",   # flake8-2020
+    "G",     # flake8-logging-format
+    "ERA",   # eradicate
+    "RUF",   # ruff
+    "FLY",   # flynt
+    "FURB",  # refurb
 ]
-ignore = ["D101", "D102", "D103", "D104", "D105", "D106", "D107", "SIM210", "D100"]
-
+ignore = [
+  "FBT002",
+  "S101",
+  "PLR2004",
+  "PLR6301",
+  "S106",
+  "RUF012",
+  "SLF001",
+  "PLR0914",
+  "PLC0415",
+  "S311",
+  "PERF401",
+  "PLR6201",
+  "G004",
+  "N818",
+]
 
 [lint.isort]
 #known-first-party = ["my_module1", "my_module2"]
@@ -36,5 +83,7 @@ length-sort-straight = true
 convention = "google"
 
 [format]
+preview = true
 exclude = ["*.pyi"]
 quote-style = "single"
+docstring-code-format = true

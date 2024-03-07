@@ -75,8 +75,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         if validated_data.get('password', False):
             validated_data.pop('password')
-        instance = super().update(instance, validated_data)
-        return instance
+        return super().update(instance, validated_data)
 
 
 class OnboardUserSerializer(serializers.Serializer):
@@ -186,7 +185,7 @@ class InitiatePasswordResetSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 {
                     'phone': 'Phone number not registered.',
-                }
+                },
             )
 
         attrs['phone'] = mobile

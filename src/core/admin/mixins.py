@@ -19,8 +19,7 @@ class ExportToJSONMixin(ResponseTypeContext):
     file_type = 'application/json'
 
     def meta_fields(self):
-        meta = self.model._meta
-        return meta
+        return self.model._meta
 
     def export_as_json(self, request, queryset):
         meta = self.meta_fields()
@@ -35,8 +34,7 @@ class ExportToCSVMixin(ResponseTypeContext):
     file_type = 'text/csv'
 
     def meta_fields(self):
-        meta = self.model._meta
-        return meta
+        return self.model._meta
 
     def export_as_csv(self, request, queryset):
         meta = self.meta_fields()

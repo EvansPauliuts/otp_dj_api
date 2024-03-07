@@ -21,26 +21,24 @@ class BearerTokenAuthentication(authentication.BaseAuthentication):
         if auth and auth[0].lower() == self.keyword.lower().encode():
             if len(auth) == 1:
                 raise exceptions.AuthenticationFailed(
-                    'Invalid token header. No credentials provided. '
-                    'Please login again.',
+                    'Invalid token header. No credentials provided. Please login again.',
                 )
-            elif len(auth) > 2:
+            if len(auth) > 2:
                 raise exceptions.AuthenticationFailed(
                     'Invalid token header. Token string should '
-                    'not contain spaces. Please login again.'
+                    'not contain spaces. Please login again.',
                 )
 
             try:
                 token = auth[1].decode()
             except UnicodeError as e:
                 raise exceptions.AuthenticationFailed(
-                    'Invalid token header. Token string should not contain '
-                    'invalid characters.'
+                    'Invalid token header. Token string should not contain invalid characters.',
                 ) from e
         else:
             token = request.COOKIES.get('auth_token')
             if not token:
-                return
+                return None
         return self.authenticate_credentials(key=token)
 
     def authenticate_credentials(self, key):
@@ -65,20 +63,15 @@ class BearerTokenAuthentication(authentication.BaseAuthentication):
 
     @staticmethod
     def validate_token(token):
-        if (
-            not token.last_used
-            or (timezone.now() - token.last_used).total_seconds() > 60
-        ):
+        if not token.last_used or (timezone.now() - token.last_used).total_seconds() > 60:
             token.last_used = timezone.now()
             token.save(update_fields=['last_used'])
 
         if token.is_expired and token.expires:
             raise exceptions.AuthenticationFailed(
-                f'Token expired at {token.expires.strftime("%Y-%m-%d %H:%M:%S")}.'
-                f' Please login again.'
+                f"Token expired at {token.expires.strftime('%Y-%m-%d %H:%M:%S')}."
+                f" Please login again.",
             )
 
         if not token.user.is_active:
-            raise exceptions.AuthenticationFailed(
-                'User inactive or deleted. Please login again.'
-            )
+            raise exceptions.AuthenticationFailed('User inactive or deleted. Please login again.')

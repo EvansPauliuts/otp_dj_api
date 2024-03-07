@@ -44,7 +44,7 @@ class JobTitle(GenericModel):
                 Lower('name'),
                 'organization',
                 name='unique_job_title_organization',
-            )
+            ),
         ]
 
     def __str__(self):

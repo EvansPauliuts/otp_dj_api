@@ -17,7 +17,7 @@ class PendingUserAdmin(
     list_per_page = 10
     list_filter = ('phone',)
     search_fields = ('phone',)
-    # readonly_fields = ('verification_code',)
+    readonly_fields = ('verification_code',)
     ordering = ('-created',)
     actions = ('export_as_json', 'export_as_csv')
 

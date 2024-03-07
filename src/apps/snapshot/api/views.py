@@ -7,8 +7,6 @@ from rest_framework.viewsets import ModelViewSet
 
 from apps.snapshot.models import Page, Post, Snapshot
 
-# from operator import itemgetter
-
 
 class PageViewSet(ModelViewSet):
     queryset = Page.objects.all()

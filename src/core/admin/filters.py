@@ -1,8 +1,5 @@
 from django.contrib import admin
 
-# from django.db.models import QuerySet
-# from django.http.request import HttpRequest
-
 
 class BooleanFilter(admin.SimpleListFilter):
     def lookups(self, request, model_admin):

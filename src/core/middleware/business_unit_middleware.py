@@ -11,8 +11,7 @@ class BusinessUnitMiddleware:
         try:
             if request.user.is_authenticated and not request.user.business_unit.paid:
                 raise ValidationError(
-                    'Your business unit is not paid, '
-                    'please contact your Account Manager'
+                    'Your business unit is not paid, please contact your Account Manager',
                 )
 
         except ValidationError as e:

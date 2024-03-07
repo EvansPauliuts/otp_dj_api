@@ -13,7 +13,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
         jwt_token = request.headers.get('authorization')
         if jwt_token is None:
-            return
+            return None
 
         jwt_token = JWTAuthentication.get_token_from_header(jwt_token)
 
@@ -26,7 +26,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
         except jwt.exceptions.InvalidSignatureError:
             raise AuthenticationFailed('Invalid signature')  # noqa: B904
         except Exception:
-            raise ParseError()  # noqa: B904
+            raise ParseError  # noqa: B904
 
         username_or_phone_number = payload.get('user_identifier')
         if username_or_phone_number is None:
@@ -49,23 +49,20 @@ class JWTAuthentication(authentication.BaseAuthentication):
             'user_identifier': user.username,
             'exp': int(
                 (
-                    datetime.now()
-                    + timedelta(hours=settings.JWT_CONF['TOKEN_LIFETIME_HOURS'])
-                ).timestamp()
+                    datetime.now() + timedelta(hours=settings.JWT_CONF['TOKEN_LIFETIME_HOURS'])
+                ).timestamp(),
             ),
             'iat': datetime.now().timestamp(),
             'username': user.username,
             'phone_number': user.phone,
         }
 
-        jwt_token = jwt.encode(
+        return jwt.encode(
             payload,
             settings.SECRET_KEY,
             algorithm='HS256',
         )
-        return jwt_token
 
     @classmethod
     def get_token_from_header(cls, token):
-        token = token.replace('Bearer', '').replace(' ', '')
-        return token
+        return token.replace('Bearer', '').replace(' ', '')

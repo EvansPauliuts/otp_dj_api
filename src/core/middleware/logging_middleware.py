@@ -9,12 +9,10 @@ logger = logging.getLogger(__name__)
 class RocketLoggingMiddleware(MiddlewareMixin):
     def process_response(self, request, response):
         duration = (now() - request._logging_start_time).total_seconds()
-        handler = (
-            request.resolver_match.url_name if request.resolver_match else 'UNKNOWN'
-        )
+        handler = request.resolver_match.url_name if request.resolver_match else 'UNKNOWN'
         client = (
-            f'{request.META.get("REMOTE_ADDR", "")}:'
-            f'{request.META.get("REMOTE_PORT", "UNKNOWN")}'
+            f"{request.META.get('REMOTE_ADDR', '')}:"
+            f"{request.META.get('REMOTE_PORT', 'UNKNOWN')}"
         )
 
         logger = logging.getLogger('django')

@@ -3,7 +3,6 @@ import uuid
 import pytest
 from rest_framework.test import APIClient
 
-# from django.urls import reverse
 from tests.factories.apps.accounts import (
     UserFactory,
     TokenFactory,
@@ -12,6 +11,10 @@ from tests.factories.apps.accounts import (
     BusinessUnitFactory,
     OrganizationFactory,
 )
+
+
+def api_client_with_credentials(token, api_client):
+    return api_client.credentials(HTTP_AUTHORIZATION=f'Bearer {token}')
 
 
 @pytest.fixture

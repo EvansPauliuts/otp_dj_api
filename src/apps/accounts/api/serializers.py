@@ -133,7 +133,7 @@ class UserProfileSerializer(GenericModelSerializer):
             },
             response_only=True,
         ),
-    ]
+    ],
 )
 class UserSerializer(GenericModelSerializer):
     groups = serializers.StringRelatedField(many=True, read_only=True)
@@ -183,8 +183,8 @@ class UserSerializer(GenericModelSerializer):
             raise serializers.ValidationError(
                 {
                     'password': 'Password cannot be added directly to a user. '
-                    'Please use the password reset endpoint.'
-                }
+                    'Please use the password reset endpoint.',
+                },
             )
 
         profile_data = validated_data.pop('profile_data', {})
@@ -213,7 +213,7 @@ class UserSerializer(GenericModelSerializer):
         if validated_data.pop('password', None):
             raise serializers.ValidationError(
                 'Password cannot be changed using this endpoint. '
-                'Please use the change password endpoint.'
+                'Please use the change password endpoint.',
             )
 
         if profile_data := validated_data.pop('profile', None):
@@ -285,7 +285,7 @@ class JobTitleSerializer(GenericModelSerializer):
             response_only=True,
             status_codes=['200'],
         ),
-    ]
+    ],
 )
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
@@ -296,14 +296,14 @@ class ChangePasswordSerializer(serializers.Serializer):
         user = self.context['request'].user
         if not user.check_password(value):
             raise serializers.ValidationError(
-                'Old password is incorrect. Please try again.'
+                'Old password is incorrect. Please try again.',
             )
         return value
 
     def validate(self, attrs):
         if attrs['new_password'] != attrs['confirm_new_password']:
             raise serializers.ValidationError(
-                'Passwords do not match. Please try again.'
+                'Passwords do not match. Please try again.',
             )
         password_validation.validate_password(
             attrs['new_password'],
@@ -327,7 +327,7 @@ class ResetPasswordSerializer(serializers.Serializer):
             user = User.objects.get(email=value)
         except User.DoesNotExist as e:
             raise serializers.ValidationError(
-                'No user found with the given email exists. Please try again.'
+                'No user found with the given email exists. Please try again.',
             ) from e
 
         if not user.is_active:
@@ -357,12 +357,16 @@ class UpdateEmailSerializer(serializers.Serializer):
 
         if not user.check_password(current_password):
             raise serializers.ValidationError(
-                {'current_password': 'Current password is incorrect. Please try again.'}
+                {
+                    'current_password': 'Current password is incorrect. Please try again.',
+                },
             )
 
         if user.email == email:
             raise serializers.ValidationError(
-                {'email': 'New email cannot be the same as the current email.'}
+                {
+                    'email': 'New email cannot be the same as the current email.',
+                },
             )
 
         if User.objects.filter(email=email).exists():
@@ -387,11 +391,10 @@ class VerifyTokenSerializer(serializers.Serializer):
 
         if Token.objects.filter(key=token).exists():
             return attrs
-        else:
-            raise serializers.ValidationError(
-                'Unable to validate given token. Please try again.',
-                code='authentication',
-            )
+        raise serializers.ValidationError(
+            'Unable to validate given token. Please try again.',
+            code='authentication',
+        )
 
 
 class TokenSerializer(serializers.ModelSerializer):
@@ -435,7 +438,7 @@ class TokenSerializer(serializers.ModelSerializer):
             },
             response_only=True,
         ),
-    ]
+    ],
 )
 class TokenProvisionSerializer(serializers.Serializer):
     username = serializers.CharField()
@@ -492,11 +495,9 @@ class UserFavoriteSerializer(GenericModelSerializer):
 
         validated_data['user'] = self.context['request'].user
 
-        user_favorite = UserFavorite.objects.create(
+        return UserFavorite.objects.create(
             user=validated_data['user'],
             page=validated_data['page'],
             organization=organization,
             business_unit=business_unit,
         )
-
-        return user_favorite
