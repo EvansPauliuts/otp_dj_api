@@ -179,7 +179,14 @@ class JobTitleViewSet(viewsets.ModelViewSet):
 
         queryset = JobTitle.objects.filter(
             organization_id=self.request.user.organization_id,
-        ).only('username', 'organization_id')
+        ).only(
+            'id',
+            'organization_id',
+            'status',
+            'description',
+            'name',
+            'job_function',
+        )
 
         if expand_users.lower() == 'true':
             queryset = queryset.prefetch_related(

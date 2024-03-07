@@ -26,6 +26,7 @@ from django.db.models.functions import Lower
 from apps.accounts.utils import PhoneValidator
 from apps.accounts.validators import validate_org_timezone
 
+from .job import JobTitle
 from .business import BusinessUnit
 from .department import Department
 from .organization import Organization
@@ -233,7 +234,7 @@ class UserProfile(GenericModel):
         related_query_name='profiles',
     )
     job_title = models.ForeignKey(
-        'JobTitle',
+        JobTitle,
         on_delete=models.PROTECT,
         related_name='profile',
         related_query_name='profiles',
@@ -323,53 +324,6 @@ class UserProfile(GenericModel):
     @cached_property
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
-
-
-class JobTitle(GenericModel):
-    class JobFunctionChoices(models.TextChoices):
-        MANAGER = 'MANAGER', 'Manager'
-        MANAGEMENT_TRAINEE = 'MANAGEMENT_TRAINEE', 'Management Trainee'
-        SUPERVISOR = 'SUPERVISOR', 'Supervisor'
-        DISPATCHER = 'DISPATCHER', 'Dispatcher'
-        BILLING = 'BILLING', 'Billing'
-        FINANCE = 'FINANCE', 'Finance'
-        SAFETY = 'SAFETY', 'Safety'
-        SYS_ADMIN = 'SYS_ADMIN', 'System Administrator'
-        TEST = 'TEST', 'Test Job Function'
-
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False,
-        unique=True,
-    )
-    status = ChoiceField(
-        choices=PrimaryStatusChoices,
-        default=PrimaryStatusChoices.ACTIVE,
-    )
-    name = models.CharField(max_length=100)
-    description = models.TextField(blank=True)
-    job_function = ChoiceField(choices=JobFunctionChoices)
-
-    class Meta:
-        db_table = 'job_title'
-        db_table_comment = 'Stores the job title information related to users.'
-        constraints = [
-            models.UniqueConstraint(
-                Lower('name'),
-                'organization',
-                name='unique_job_title_organization',
-            )
-        ]
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse(
-            'accounts:job-title-view',
-            kwargs={'pk': self.pk},
-        )
 
 
 class Token(models.Model):

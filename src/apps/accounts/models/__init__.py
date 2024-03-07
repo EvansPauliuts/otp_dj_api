@@ -1,4 +1,5 @@
-from .account import User, Token, JobTitle, CustomGroup, UserProfile, UserFavorite
+from .job import JobTitle
+from .account import User, Token, CustomGroup, UserProfile, UserFavorite
 from .business import BusinessUnit
 from .department import Depot, Department
 from .organization import Organization

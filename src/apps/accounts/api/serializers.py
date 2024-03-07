@@ -266,14 +266,12 @@ class JobTitleSerializer(GenericModelSerializer):
         expand_users = self.context['request'].query_params.get('expand_users', 'false')
         if expand_users.lower() != 'true':
             return []
-        return [profile.user.username for profile in obj.profiles.all()]
+        return [profile.user.username for profile in obj.profile.all()]
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        expaned_users = self.context['request'].query_params.get(
-            'expand_users', 'false'
-        )
-        if expaned_users.lower() != 'true':
+        expand_users = self.context['request'].query_params.get('expand_users', 'false')
+        if expand_users.lower() != 'true':
             ret.pop('users', None)
         return ret
 

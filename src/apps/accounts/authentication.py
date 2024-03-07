@@ -11,7 +11,7 @@ def get_authorization_header(request):
     return auth
 
 
-class BearerAuthentication(authentication.BaseAuthentication):
+class BearerTokenAuthentication(authentication.BaseAuthentication):
     keyword = 'Bearer'
     model = Token
 
@@ -41,7 +41,7 @@ class BearerAuthentication(authentication.BaseAuthentication):
             token = request.COOKIES.get('auth_token')
             if not token:
                 return
-        return self
+        return self.authenticate_credentials(key=token)
 
     def authenticate_credentials(self, key):
         try:
@@ -72,7 +72,7 @@ class BearerAuthentication(authentication.BaseAuthentication):
             token.last_used = timezone.now()
             token.save(update_fields=['last_used'])
 
-        if token.is_expired() and token.expires:
+        if token.is_expired and token.expires:
             raise exceptions.AuthenticationFailed(
                 f'Token expired at {token.expires.strftime("%Y-%m-%d %H:%M:%S")}.'
                 f' Please login again.'
