@@ -1,8 +1,5 @@
-from .image import FileModel
-from .image import ImageModel
-from .user import PendingUser
-from .user import Token
-from .user import User
+from .user import User, Token, PendingUser
+from .image import FileModel, ImageModel
 
 __all__ = [
     'PendingUser',

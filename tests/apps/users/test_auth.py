@@ -1,17 +1,12 @@
-from datetime import datetime
-from datetime import timedelta
-from datetime import timezone
+from datetime import UTC, datetime, timedelta
 
 import pytest
 import time_machine
 from django.urls import reverse
 from rest_framework import status
+from apps.users.common import TokenEnum, SystemRoleEnum
+from apps.users.models import User, Token, PendingUser
 
-from apps.users.common import SystemRoleEnum
-from apps.users.common import TokenEnum
-from apps.users.models import PendingUser
-from apps.users.models import Token
-from apps.users.models import User
 from tests.conftest import api_client_with_credentials
 
 pytestmark = pytest.mark.django_db
@@ -176,7 +171,7 @@ class TestAuthEndpoints:
             verification_code=1234,
             password='<PASSWORD>',
         )
-        with time_machine.travel(datetime.now(timezone.utc) + timedelta(minutes=10)):
+        with time_machine.travel(datetime.now(UTC) + timedelta(minutes=10)):
             data = {
                 'otp': pending_user.verification_code,
                 'phone': pending_user.phone,

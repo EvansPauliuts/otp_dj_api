@@ -1,8 +1,11 @@
 import uuid
 
 from django.db import models
-from django.db.models.functions import Lower
 from django.urls import reverse
+from django.db.models.functions import Lower
+
+from .business import BusinessUnit
+from .organization import Organization
 
 
 class Depot(models.Model):
@@ -13,12 +16,12 @@ class Depot(models.Model):
         unique=True,
     )
     business_unit = models.ForeignKey(
-        'business.BusinessUnit',
+        BusinessUnit,
         on_delete=models.CASCADE,
         related_name='depots',
     )
     organization = models.ForeignKey(
-        'organization.Organization',
+        Organization,
         on_delete=models.CASCADE,
         related_name='depots',
         related_query_name='depot',
@@ -55,12 +58,12 @@ class Department(models.Model):
         unique=True,
     )
     business_unit = models.ForeignKey(
-        'business.BusinessUnit',
+        BusinessUnit,
         on_delete=models.CASCADE,
         related_name='departments',
     )
     organization = models.ForeignKey(
-        'organization.Organization',
+        Organization,
         on_delete=models.CASCADE,
         related_name='departments',
         related_query_name='department',

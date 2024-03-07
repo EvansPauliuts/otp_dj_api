@@ -1,11 +1,15 @@
 from django.db import models
-from django.urls import reverse
-from django.utils.functional import cached_property
-from localflavor.us.models import USZipCodeField
-from phonenumber_field.modelfields import PhoneNumberField
-
-from apps.accounts.validators import validate_org_timezone
 from core.models import TimeStampedModel
+from django.urls import reverse
+from localflavor.us.models import USZipCodeField
+from django.utils.functional import cached_property
+
+from apps.accounts.utils import PhoneValidator
+from apps.accounts.validators import validate_org_timezone
+
+from .business import BusinessUnit
+
+# from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Organization(TimeStampedModel):
@@ -19,7 +23,7 @@ class Organization(TimeStampedModel):
         SPANISH = 'es', 'Spanish'
 
     business_unit = models.ForeignKey(
-        'business.BusinessUnit',
+        BusinessUnit,
         on_delete=models.CASCADE,
         related_name='organizations',
     )
@@ -31,7 +35,11 @@ class Organization(TimeStampedModel):
     city = models.CharField(max_length=255)
     state = models.CharField(max_length=5)
     zip_code = USZipCodeField()
-    phone_number = PhoneNumberField(blank=True, region='US')
+    phone_number = models.CharField(
+        max_length=15,
+        blank=True,
+        validators=[PhoneValidator()],
+    )
     website = models.URLField(blank=True)
     org_type = models.CharField(
         max_length=10,

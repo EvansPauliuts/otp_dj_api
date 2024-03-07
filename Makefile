@@ -1,5 +1,6 @@
 DC = docker-compose
 PC = pip-compile
+MG = python src/manage.py
 
 .PHONY: dev test urls pre, test_local test_docker
 
@@ -29,3 +30,31 @@ req_dev:
 
 req_prod:
 	$(PC) ./requirements/prod.in
+
+.PHONY: show_urls
+
+show_urls:
+	$(MG) show_urls
+
+.PHONY: local_test
+
+local_test:
+	pytest -vvv tests/apps/accounts
+
+.PHONY: ruf_format uv_pip pip_install ruff_check chekc_i
+
+ruff_check:
+	ruff check --fix .
+
+ruf_format:
+	ruff format .
+
+check_i:
+	ruff check . --select I --fix
+	ruff format .
+
+uv_pip:
+	uv pip compile requirements/dev.in -o requirements/dev.txt
+
+pip_install:
+	uv pip install -r requirements/dev.txt

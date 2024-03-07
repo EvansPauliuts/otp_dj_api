@@ -1,17 +1,14 @@
 import random
 import string
 
-# from django.contrib.auth import get_user_model
-from django.core.management.base import BaseCommand
-from django.core.management.base import CommandError
 from django.db import transaction
 from rich.progress import Progress
-
-from apps.accounts.models import JobTitle
-from apps.accounts.models import Organization
-from apps.accounts.models import UserA
-from apps.accounts.models import UserProfile
 from core.utils.helpers import get_or_create_business_unit
+
+# from django.contrib.auth import get_user_model
+from django.core.management.base import BaseCommand, CommandError
+
+from apps.accounts.models import User, JobTitle, UserProfile, Organization
 
 
 class Command(BaseCommand):
@@ -22,7 +19,7 @@ class Command(BaseCommand):
         business_unit = get_or_create_business_unit(bs_name='Transportation')
 
         system_org_answer = input(
-            'What is the SCAC of organization you\'d like '
+            "What is the SCAC of organization you'd like "
             'to add the test users to? (Scac Code) '
         )
         number_of_users_answer = input('How many test users would you like to create? ')
@@ -49,7 +46,7 @@ class Command(BaseCommand):
         )
 
         usernames = [f'testuser-{i}' for i in range(number_of_users)]
-        existing_users = UserA.objects.filter(username__in=usernames).values_list(
+        existing_users = User.objects.filter(username__in=usernames).values_list(
             'username', flat=True
         )
 
@@ -69,7 +66,7 @@ class Command(BaseCommand):
                     random.choices(string.ascii_uppercase + string.digits, k=8)
                 )
 
-                new_user = UserA(
+                new_user = User(
                     username=usernames[i],
                     email=email,
                     password=password,
@@ -79,7 +76,7 @@ class Command(BaseCommand):
                 new_users.append(new_user)
                 progress.update(task, advance=1)
 
-        UserA.objects.bulk_create(new_users)
+        User.objects.bulk_create(new_users)
 
         new_profiles = []
 
@@ -93,7 +90,7 @@ class Command(BaseCommand):
                     progress.update(task, advance=1)
                     continue
 
-                user = UserA.objects.get(username=usernames[i])
+                user = User.objects.get(username=usernames[i])
                 new_profile = UserProfile(
                     user=user,
                     organization=system_org,

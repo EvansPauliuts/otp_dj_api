@@ -1,21 +1,11 @@
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 
-from django.db.models import Count
-from django.db.models import F
-from django.db.models import IntegerField
-from django.db.models import Max
-from django.db.models import OuterRef
-from django.db.models import Q
-from django.db.models import Subquery
-from django.db.models import Sum
 from rest_framework import status
+from django.db.models import F, Q, Max, Sum, Count, OuterRef, Subquery, IntegerField
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from apps.snapshot.models import Page
-from apps.snapshot.models import Post
-from apps.snapshot.models import Snapshot
+from apps.snapshot.models import Page, Post, Snapshot
 
 # from operator import itemgetter
 
@@ -25,11 +15,6 @@ class PageViewSet(ModelViewSet):
     http_method_names = ('get',)
 
     def list(self, request, *args, **kwargs):
-        """
-        Show the list of Pages by its name, number of posts and the
-        sum of all the post’s like_count and comment_count that was created
-        in the last 7 days. Order DESC by its number of posts
-        """
         _filter = Q(created__range=(datetime.now(), datetime.now() - timedelta(days=7)))
 
         pages_1 = (
@@ -45,12 +30,6 @@ class PageViewSet(ModelViewSet):
                 'name',
             )
         )
-
-        """
-        Show the list of Pages by its name, Max of it followers in the last 7
-        days and the sum of all the post’s like_count and comment_count that was created
-        in the last 7 days. Order DESC by its number of followers
-        """
 
         pages_2 = (
             self.queryset.annotate(
@@ -106,12 +85,6 @@ class PostViewSet(ModelViewSet):
             )
             .order_by('-max_follower')
         )
-
-        """
-        All this line just make 1 query, so don’t worry. Now, there just one JOINs
-        so it make fastest query and less time to load your website.
-        Remember to check the numbers is correct.
-        """
 
         sub_query_max = (
             Snapshot.objects.filter(

@@ -1,19 +1,15 @@
 import uuid
-from datetime import datetime
-from datetime import timezone
+from datetime import UTC, datetime
 
-from django.conf import settings
-from django.contrib.auth.models import AbstractBaseUser
-from django.contrib.auth.models import PermissionsMixin
-from django.contrib.postgres.fields import ArrayField
 from django.db import models
-
-from apps.users.common import ROLE_CHOICE
-from apps.users.common import TOKEN_TYPE_CHOICE
-from apps.users.common import SystemRoleEnum
-from apps.users.managers import CustomUserManager
-from apps.users.utils import PhoneValidator
 from core.models import TimeStampedModel
+from django.conf import settings
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.postgres.fields import ArrayField
+
+from apps.users.utils import PhoneValidator
+from apps.users.common import ROLE_CHOICE, TOKEN_TYPE_CHOICE, SystemRoleEnum
+from apps.users.managers import CustomUserManager
 
 
 class PendingUser(TimeStampedModel):
@@ -36,7 +32,7 @@ class PendingUser(TimeStampedModel):
 
     def is_valid(self):
         lifespan_in_seconds = float(settings.OTP_EXPIRE_TIME * 60)
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         time_diff = now - self.created
         time_diff = time_diff.total_seconds()
 
@@ -100,7 +96,7 @@ class Token(TimeStampedModel):
 
     def is_valid(self):
         lifespan_in_seconds = float(settings.TOKEN_LIFESPAN * 60)
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         time_diff = now - self.created
         time_diff = time_diff.total_seconds()
         if time_diff >= lifespan_in_seconds:

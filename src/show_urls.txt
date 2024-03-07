@@ -1,0 +1,59 @@
+# /__debug__/render_panel/	debug_toolbar.views.render_panel	djdt:render_panel
+# /__debug__/sql_explain/	debug_toolbar.panels.sql.views.sql_explain	djdt:sql_explain
+# /__debug__/sql_profile/	debug_toolbar.panels.sql.views.sql_profile	djdt:sql_profile
+# /__debug__/sql_select/	debug_toolbar.panels.sql.views.sql_select	djdt:sql_select
+# /__debug__/template_source/	debug_toolbar.panels.templates.views.template_source	djdt:template_source
+# /admin/	django.contrib.admin.sites.index	admin:index
+# /admin/<app_label>/	django.contrib.admin.sites.app_index	admin:app_list
+# /admin/<url>	django.contrib.admin.sites.catch_all_view
+# /admin/auth/group/	django.contrib.admin.options.changelist_view	admin:auth_group_changelist
+# /admin/auth/group/<path:object_id>/	django.views.generic.base.RedirectView
+# /admin/auth/group/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:auth_group_change
+# /admin/auth/group/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:auth_group_delete
+# /admin/auth/group/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:auth_group_history
+# /admin/auth/group/add/	django.contrib.admin.options.add_view	admin:auth_group_add
+# /admin/authtoken/tokenproxy/	django.contrib.admin.options.changelist_view	admin:authtoken_tokenproxy_changelist
+# /admin/authtoken/tokenproxy/<path:object_id>/	django.views.generic.base.RedirectView
+# /admin/authtoken/tokenproxy/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:authtoken_tokenproxy_change
+# /admin/authtoken/tokenproxy/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:authtoken_tokenproxy_delete
+# /admin/authtoken/tokenproxy/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:authtoken_tokenproxy_history
+# /admin/authtoken/tokenproxy/add/	django.contrib.admin.options.add_view	admin:authtoken_tokenproxy_add
+# /admin/autocomplete/	django.contrib.admin.sites.autocomplete_view	admin:autocomplete
+# /admin/jsi18n/	django.contrib.admin.sites.i18n_javascript	admin:jsi18n
+# /admin/login/	django.contrib.admin.sites.login	admin:login
+# /admin/logout/	django.contrib.admin.sites.logout	admin:logout
+# /admin/password_change/	django.contrib.admin.sites.password_change	admin:password_change
+# /admin/password_change/done/	django.contrib.admin.sites.password_change_done	admin:password_change_done
+# /admin/r/<int:content_type_id>/<path:object_id>/	django.contrib.contenttypes.views.shortcut	admin:view_on_site
+# /api/schema/	drf_spectacular.views.SpectacularAPIView	schema
+# /api/v1/	rest_framework.routers.APIRootView	users:api-root
+# /api/v1/\.<format>/	rest_framework.routers.APIRootView	users:api-root
+# /api/v1/change_email/	apps.accounts.api.views.UpdateEmailView	users:change_email
+# /api/v1/change_password/	apps.accounts.api.views.UpdatePasswordView	users:change_password
+# /api/v1/doc/	drf_spectacular.views.SpectacularSwaggerView	swagger-ui
+# /api/v1/groups/	apps.accounts.api.views.GroupViewSet	users:groups-list
+# /api/v1/groups/<pk>/	apps.accounts.api.views.GroupViewSet	users:groups-detail
+# /api/v1/groups/<pk>\.<format>/	apps.accounts.api.views.GroupViewSet	users:groups-detail
+# /api/v1/groups\.<format>/	apps.accounts.api.views.GroupViewSet	users:groups-list
+# /api/v1/job_titles/	apps.accounts.api.views.JobTitleViewSet	users:job_titles-list
+# /api/v1/job_titles/<pk>/	apps.accounts.api.views.JobTitleViewSet	users:job_titles-detail
+# /api/v1/job_titles/<pk>\.<format>/	apps.accounts.api.views.JobTitleViewSet	users:job_titles-detail
+# /api/v1/job_titles\.<format>/	apps.accounts.api.views.JobTitleViewSet	users:job_titles-list
+# /api/v1/login/	apps.accounts.api.views.TokenProvisionView	users:provision_token
+# /api/v1/logout/	apps.accounts.api.views.UserLogoutView	users:logout
+# /api/v1/me/	apps.accounts.api.views.UserDetailView	users:me
+# /api/v1/media/<path>	django.views.static.serve
+# /api/v1/permissions/	apps.accounts.api.views.PermissionViewSet	users:permissions-list
+# /api/v1/permissions/<pk>/	apps.accounts.api.views.PermissionViewSet	users:permissions-detail
+# /api/v1/permissions/<pk>\.<format>/	apps.accounts.api.views.PermissionViewSet	users:permissions-detail
+# /api/v1/permissions\.<format>/	apps.accounts.api.views.PermissionViewSet	users:permissions-list
+# /api/v1/reset_password/	apps.accounts.api.views.ResetPasswordView	users:reset_password
+# /api/v1/static/<path>	django.views.static.serve
+# /api/v1/users/	apps.accounts.api.views.UserViewSet	users:users-list
+# /api/v1/users/<pk>/	apps.accounts.api.views.UserViewSet	users:users-detail
+# /api/v1/users/<pk>\.<format>/	apps.accounts.api.views.UserViewSet	users:users-detail
+# /api/v1/users\.<format>/	apps.accounts.api.views.UserViewSet	users:users-list
+# /healthchecks/	django_healthchecks.views.HealthCheckView	index
+# /healthchecks/<str:service>/	django_healthchecks.views.HealthCheckServiceView	service
+# /media/<path>	django.views.static.serve
+# /static/<path>	django.views.static.serve

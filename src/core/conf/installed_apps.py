@@ -14,7 +14,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_extensions',
+    'drf_standardized_errors',
     # Local apps
-    'apps.users',
+    # 'apps.users',
+    'apps.accounts',
     'core',
 ]

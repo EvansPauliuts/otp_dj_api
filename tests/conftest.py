@@ -1,22 +1,65 @@
+import uuid
+
 import pytest
-from django.core.cache import cache
+from rest_framework.test import APIClient
 
-from tests.factories.apps.accounts import JobTitleFactory
+from tests.factories.apps.accounts import (
+    UserFactory,
+    TokenFactory,
+    ProfileFactory,
+    JobTitleFactory,
+    BusinessUnitFactory,
+    OrganizationFactory,
+)
 
-pytest_plugins = [
-    'tests.factories.apps.users',
-    'tests.fixtures.apps.users',
-]
+# pytest_plugins = [
+#     'tests.apps.accounts.factories.users',
+#     'tests.apps.accounts.fixtures.users',
+# ]
 
 
 def api_client_with_credentials(token, api_client):
     return api_client.credentials(HTTP_AUTHORIZATION=f'Bearer {token}')
 
 
-@pytest.fixture(autouse=True)
-def _cache(request):
-    yield
-    cache.clear()
+@pytest.fixture
+def token():
+    yield TokenFactory()
+
+
+@pytest.fixture
+def business_unit():
+    yield BusinessUnitFactory()
+
+
+@pytest.fixture
+def organization():
+    yield OrganizationFactory()
+
+
+@pytest.fixture
+def user():
+    yield UserFactory()
+
+
+@pytest.fixture
+def user_profile():
+    yield ProfileFactory()
+
+
+@pytest.fixture
+def api_client(token):
+    client = APIClient()
+    client.credentials(
+        HTTP_AUTHORIZATION=f'Bearer {token.key}',
+        HTTP_X_IDEMPOTENCY_KEY=str(uuid.uuid4()),
+    )
+    yield client
+
+
+@pytest.fixture
+def unauthenticated_api_client():
+    yield APIClient()
 
 
 @pytest.fixture
@@ -27,8 +70,9 @@ def job_title():
 @pytest.fixture
 def user_api(api_client, organization, business_unit):
     job_title = JobTitleFactory()
+
     yield api_client.post(
-        '/api/users/',
+        '/api/v1/users/',
         {
             'organization': organization.id,
             'business_unit': business_unit.id,

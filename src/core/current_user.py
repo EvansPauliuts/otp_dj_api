@@ -1,7 +1,6 @@
-from threading import current_thread
-from threading import local
+from threading import local, current_thread
 
-from apps.users.models import User
+from apps.accounts.models import User
 
 _thread_locals = local()
 
@@ -25,4 +24,4 @@ def unset_current_user() -> None:
 
 def _thread_key() -> str:
     thread_name = current_thread().name
-    return f"user_{thread_name}"
+    return f'user_{thread_name}'

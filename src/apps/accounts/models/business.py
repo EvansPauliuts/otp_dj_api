@@ -1,13 +1,12 @@
-from django.core.validators import FileExtensionValidator
 from django.db import models
-from django.db.models.functions import Lower
+from core.models import TimeStampedModel
 from django.urls import reverse
 from django.utils import timezone
 from localflavor.us.models import USZipCodeField
+from django.core.validators import FileExtensionValidator
+from django.db.models.functions import Lower
 
-from apps.accounts.utils import PhoneValidator
-from apps.accounts.utils import business_unit_contract_upload_to
-from core.models import TimeStampedModel
+from apps.accounts.utils import PhoneValidator, business_unit_contract_upload_to
 
 
 class BusinessUnit(TimeStampedModel):

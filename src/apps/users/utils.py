@@ -1,13 +1,13 @@
-import base64
-import logging
 import os
 import re
+import base64
+import logging
 
 import pyotp
 from django.conf import settings
+from rest_framework import serializers
 from django.core.cache import cache
 from django.core.validators import RegexValidator
-from rest_framework import serializers
 from rest_framework.permissions import BasePermission
 
 from apps.users.common import SystemRoleEnum

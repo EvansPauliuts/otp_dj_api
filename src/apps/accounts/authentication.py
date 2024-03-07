@@ -1,7 +1,5 @@
 from django.utils import timezone
-from rest_framework import HTTP_HEADER_ENCODING
-from rest_framework import authentication
-from rest_framework import exceptions
+from rest_framework import HTTP_HEADER_ENCODING, exceptions, authentication
 
 from apps.accounts.models.account import Token
 

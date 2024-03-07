@@ -1,12 +1,10 @@
 import logging
 import secrets
 
+from PIL import Image, UnidentifiedImageError
+from core.utils.helpers import optimize_image
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
-from PIL import Image
-from PIL import UnidentifiedImageError
-
-from core.utils.helpers import optimize_image
 
 log = logging.getLogger(__name__)
 
@@ -21,7 +19,7 @@ def generate_thumbnail(
     size,
 ):
     if not user_profile.profile_picture:
-        log.info('User doesn\'t have a profile picture. Skipping thumbnail generation.')
+        log.info("User doesn't have a profile picture. Skipping thumbnail generation.")
         user_profile.thumbnail = None
         return
 

@@ -1,7 +1,6 @@
-from django.utils.functional import cached_property
 from rest_framework import serializers
-
-from apps.users.models import Token
+from apps.accounts.models import Token
+from django.utils.functional import cached_property
 
 
 class GenericModelSerializer(serializers.ModelSerializer):

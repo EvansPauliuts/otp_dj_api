@@ -2,10 +2,10 @@ import logging
 from datetime import timedelta
 
 from celery import shared_task
+from core.celery import celery
 from django.utils import timezone
 
 from apps.users.models import PendingUser
-from core.celery import celery
 
 from .utils import send_sms
 

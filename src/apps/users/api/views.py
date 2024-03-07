@@ -1,44 +1,36 @@
-from django.contrib.auth import get_user_model
+from rest_framework import status, filters, viewsets, serializers
+from core.permissions import AllowAny, IsAuthenticated
+from drf_spectacular.utils import extend_schema, inline_serializer
 from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
-from django_filters.rest_framework import DjangoFilterBackend
-from drf_spectacular.utils import extend_schema
-from drf_spectacular.utils import inline_serializer
-from rest_framework import filters
-from rest_framework import serializers
-from rest_framework import status
-from rest_framework import viewsets
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
+from rest_framework.decorators import action
+from django.views.decorators.cache import cache_page
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from apps.users.utils import IsAdmin, delete_cache, is_admin_user
 from apps.users.common import TokenEnum
+from apps.users.models import User, Token, FileModel, ImageModel
 from apps.users.filters import UserFilter
-from apps.users.models import FileModel
-from apps.users.models import ImageModel
-from apps.users.models import Token
-from apps.users.utils import IsAdmin
-from apps.users.utils import delete_cache
-from apps.users.utils import is_admin_user
-from core.permissions import AllowAny
-from core.permissions import IsAuthenticated
 
-from .serializers import AccountVerificationSerializer
-from .serializers import AuthTokenSerializer
-from .serializers import CreatePasswordFromResetOTPSerializer
-from .serializers import CustomObtainTokenPairSerializer
-from .serializers import EmailSerializer
-from .serializers import FileSerializer
-from .serializers import ImageSerializer
-from .serializers import InitiatePasswordResetSerializer
-from .serializers import ListUserSerializer
-from .serializers import MultiFileSerializer
-from .serializers import MultiImageSerializer
-from .serializers import OnboardUserSerializer
-from .serializers import PasswordChangeSerializer
-from .serializers import UpdateUserSerializer
+from .serializers import (
+    FileSerializer,
+    EmailSerializer,
+    ImageSerializer,
+    ListUserSerializer,
+    AuthTokenSerializer,
+    MultiFileSerializer,
+    MultiImageSerializer,
+    UpdateUserSerializer,
+    OnboardUserSerializer,
+    PasswordChangeSerializer,
+    AccountVerificationSerializer,
+    CustomObtainTokenPairSerializer,
+    InitiatePasswordResetSerializer,
+    CreatePasswordFromResetOTPSerializer,
+)
 
 
 class CustomObtainTokenPairView(TokenObtainPairView):
@@ -46,7 +38,7 @@ class CustomObtainTokenPairView(TokenObtainPairView):
 
 
 class UserViewSets(viewsets.ModelViewSet):
-    queryset = get_user_model().objects.all()
+    queryset = User.objects.all()
     serializer_class = ListUserSerializer
     permission_classes = (IsAuthenticated,)
     # http_method_names = ('GET', 'POST', 'PATCH', 'DELETE')

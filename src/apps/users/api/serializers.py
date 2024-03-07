@@ -1,29 +1,20 @@
-from datetime import datetime
-from datetime import timezone
+from datetime import UTC, datetime
 
-from django.contrib.auth import authenticate
-from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import make_password
 from django.db import transaction
-from rest_framework import exceptions
-from rest_framework import serializers
+from rest_framework import exceptions, serializers
+from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from apps.users.common import TokenEnum
-from apps.users.models import FileModel
-from apps.users.models import ImageModel
-from apps.users.models import PendingUser
-from apps.users.models import Token
-from apps.users.models import User
 from apps.users.tasks import send_phone_notification
-from apps.users.utils import clean_phone
-from apps.users.utils import generate_otp
-from apps.users.utils import is_admin_user
+from apps.users.utils import clean_phone, generate_otp, is_admin_user
+from apps.users.common import TokenEnum
+from apps.users.models import User, Token, FileModel, ImageModel, PendingUser
 
 
 class ListUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = get_user_model()
+        model = User
         fields = (
             'id',
             'firstname',
@@ -49,7 +40,7 @@ class ListUserSerializer(serializers.ModelSerializer):
 
 class UpdateUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = get_user_model()
+        model = User
         fields = (
             'id',
             'firstname',
@@ -119,7 +110,7 @@ class OnboardUserSerializer(serializers.Serializer):
                 'phone': phone_number,
                 'verification_code': otp,
                 'password': make_password(validated_data.get('password')),
-                'created': datetime.now(timezone.utc),
+                'created': datetime.now(UTC),
             },
         )
 
@@ -215,7 +206,7 @@ class InitiatePasswordResetSerializer(serializers.Serializer):
                 'user': user,
                 'token_type': TokenEnum.PASSWORD_RESET,
                 'token': otp,
-                'created': datetime.now(timezone.utc),
+                'created': datetime.now(UTC),
             },
         )
 
@@ -258,8 +249,8 @@ class CustomObtainTokenPairSerializer(TokenObtainPairSerializer):
 
         token['firstname'] = user.firstname
         token['lastname'] = user.lastname
-        token["email"] = user.email
-        token["roles"] = user.roles
+        token['email'] = user.email
+        token['roles'] = user.roles
 
         return token
 

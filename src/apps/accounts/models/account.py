@@ -1,27 +1,34 @@
 import uuid
 
-from django.contrib.auth.models import AbstractBaseUser
-from django.contrib.auth.models import BaseUserManager
-from django.contrib.auth.models import GroupManager
-from django.contrib.auth.models import Permission
-from django.contrib.auth.models import PermissionsMixin
-from django.core.exceptions import ValidationError
-from django.core.validators import MinLengthValidator
-from django.db import models
-from django.db import transaction
-from django.db.models.functions import Lower
+from django.db import models, transaction
+from core.models import (
+    ChoiceField,
+    GenericModel,
+    TimezoneChoices,
+    TimeStampedModel,
+    PrimaryStatusChoices,
+)
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.functional import cached_property
 from localflavor.us.models import USZipCodeField
+from django.core.exceptions import ValidationError
+from django.core.validators import MinLengthValidator
+from django.utils.functional import cached_property
+from django.contrib.auth.models import (
+    Permission,
+    GroupManager,
+    BaseUserManager,
+    AbstractBaseUser,
+    PermissionsMixin,
+)
+from django.db.models.functions import Lower
 
 from apps.accounts.utils import PhoneValidator
 from apps.accounts.validators import validate_org_timezone
-from core.models import TimeStampedModel
-from core.utils.models import ChoiceField
-from core.utils.models import GenericModel
-from core.utils.models import PrimaryStatusChoices
-from core.utils.models import TimezoneChoices
+
+from .business import BusinessUnit
+from .department import Department
+from .organization import Organization
 
 
 class CustomGroup(TimeStampedModel):
@@ -31,13 +38,13 @@ class CustomGroup(TimeStampedModel):
         blank=True,
     )
     business_unit = models.ForeignKey(
-        'business.BusinessUnit',
+        BusinessUnit,
         on_delete=models.CASCADE,
         related_name='groups',
         related_query_name='group',
     )
     organization = models.ForeignKey(
-        'organization.Organization',
+        Organization,
         on_delete=models.CASCADE,
         related_name='groups',
         related_query_name='group',
@@ -144,7 +151,7 @@ class UserManager(BaseUserManager):
         )
 
 
-class UserA(AbstractBaseUser, CustomPermissionMixin):
+class User(AbstractBaseUser, CustomPermissionMixin):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -152,19 +159,19 @@ class UserA(AbstractBaseUser, CustomPermissionMixin):
         unique=True,
     )
     business_unit = models.ForeignKey(
-        'business.BusinessUnit',
+        BusinessUnit,
         on_delete=models.CASCADE,
         related_name='users',
         related_query_name='user',
     )
     organization = models.ForeignKey(
-        'organizations.Organization',
+        Organization,
         on_delete=models.CASCADE,
         related_name='users',
         related_query_name='user',
     )
     department = models.ForeignKey(
-        'departments.Department',
+        Department,
         on_delete=models.CASCADE,
         related_name='users',
         related_query_name='user',
@@ -188,7 +195,7 @@ class UserA(AbstractBaseUser, CustomPermissionMixin):
         blank=True,
         null=True,
     )
-    object = UserManager()
+    objects = UserManager()
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
@@ -220,7 +227,7 @@ class UserProfile(GenericModel):
         unique=True,
     )
     user = models.OneToOneField(
-        UserA,
+        User,
         on_delete=models.CASCADE,
         related_name='profile',
         related_query_name='profiles',
@@ -373,7 +380,7 @@ class Token(models.Model):
         unique=True,
     )
     user = models.ForeignKey(
-        UserA,
+        User,
         on_delete=models.CASCADE,
         related_name='tokens',
         related_query_name='token',
@@ -415,7 +422,7 @@ class UserFavorite(GenericModel):
         unique=True,
     )
     user = models.ForeignKey(
-        UserA,
+        User,
         on_delete=models.CASCADE,
         related_name='favorites',
         related_query_name='favorite',

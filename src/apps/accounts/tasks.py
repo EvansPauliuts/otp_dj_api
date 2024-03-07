@@ -1,14 +1,14 @@
-from celery import app
+from celery import shared_task
+from core.exceptions import ServiceException
 
 # from celery import shared_task
 from django.shortcuts import get_object_or_404
 
 from apps.accounts import services
 from apps.accounts.models.account import UserProfile
-from core.exceptions import ServiceException
 
 
-@app.task(
+@shared_task(
     name='generate_thumbnail',
     bind=True,
     max_retries=5,

@@ -1,5 +1,5 @@
-from core.conf.boilerplate import BASE_DIR
 from core.conf.environ import env
+from core.conf.boilerplate import BASE_DIR
 
 if env('DB_USE_DOCKER', cast=int):
     DATABASES = {
@@ -10,6 +10,13 @@ if env('DB_USE_DOCKER', cast=int):
             'PASSWORD': env('DB_PASSWORD'),
             'HOST': env('DB_HOST'),
             'PORT': env('DB_PORT'),
+            'OPTIONS': {
+                'options': '-c statement_timeout=60000',
+                'server_side_binding': True,
+                'connect_timeout': 10,
+                'client_encoding': 'UTF8',
+                'sslmode': env('DB_SSL_MODE', cast=str, default=''),
+            },
         },
     }
 else:
@@ -22,3 +29,4 @@ else:
 
 if not env('DEBUG'):
     DATABASES['default']['CONN_MAX_AGE'] = 600
+    DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = False

@@ -1,0 +1,40 @@
+include = ["src/**/*.py", "scripts/**/*.py", "tests/**/*.py"]
+exclude = [
+    ".git",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".venv",
+    "venv",
+]
+line-length = 88
+indent-width = 4
+target-version = "py312"
+
+[lint]
+extend-select = [
+  "E501",
+  "D",
+  "E",
+  "F",
+  "UP",
+  "B",
+  "SIM",
+  "I",
+]
+ignore = ["D101", "D102", "D103", "D104", "D105", "D106", "D107", "SIM210", "D100"]
+
+
+[lint.isort]
+#known-first-party = ["my_module1", "my_module2"]
+#lines-after-imports = 1
+length-sort = true
+length-sort-straight = true
+
+[lint.pydocstyle]
+convention = "google"
+
+[format]
+exclude = ["*.pyi"]
+quote-style = "single"

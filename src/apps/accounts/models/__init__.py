@@ -1,13 +1,7 @@
-from business.models import BusinessUnit
-from department.models import Department
-from department.models import Depot
-from organization.models import Organization
-
-from .account import JobTitle
-from .account import Token
-from .account import UserA
-from .account import UserFavorite
-from .account import UserProfile
+from .account import User, Token, JobTitle, CustomGroup, UserProfile, UserFavorite
+from .business import BusinessUnit
+from .department import Depot, Department
+from .organization import Organization
 
 __all__ = [
     'BusinessUnit',
@@ -16,7 +10,8 @@ __all__ = [
     'Organization',
     'UserFavorite',
     'UserProfile',
-    'UserA',
+    'User',
     'JobTitle',
     'Token',
+    'CustomGroup',
 ]

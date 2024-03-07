@@ -1,14 +1,15 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenRefreshView
-from rest_framework_simplejwt.views import TokenVerifyView
+from rest_framework_simplejwt.views import TokenVerifyView, TokenRefreshView
 
-from apps.users.api.views import AuthViewSets
-from apps.users.api.views import CustomObtainTokenPairView
-from apps.users.api.views import FileViewSet
-from apps.users.api.views import ImageViewSet
-from apps.users.api.views import PasswordChangeView
-from apps.users.api.views import UserViewSets
+from apps.users.api.views import (
+    FileViewSet,
+    AuthViewSets,
+    ImageViewSet,
+    UserViewSets,
+    PasswordChangeView,
+    CustomObtainTokenPairView,
+)
 
 app_name = 'users'
 router = DefaultRouter()

@@ -1,13 +1,10 @@
 import re
 
-from django.core.management import BaseCommand
 from django.db import transaction
-
-from apps.accounts.models import JobTitle
-from apps.accounts.models import Organization
-from apps.accounts.models import UserA
-from apps.accounts.models import UserProfile
 from core.utils.helpers import get_or_create_business_unit
+from django.core.management import BaseCommand
+
+from apps.accounts.models import User, JobTitle, UserProfile, Organization
 
 
 class Command(BaseCommand):
@@ -87,11 +84,11 @@ class Command(BaseCommand):
         organization = self.create_system_organization(organization_name, business_unit)
         job_title = self.create_system_job_title(organization, business_unit)
 
-        if UserA.objects.filter(username=username).exists():
+        if User.objects.filter(username=username).exists():
             self.stderr.write(self.style.ERROR(f'User {username} already exists'))
             return
 
-        user = UserA.objects.create_superuser(
+        user = User.objects.create_superuser(
             username=username,
             email=email,
             password=password,
@@ -111,7 +108,7 @@ class Command(BaseCommand):
                 'city': 'Anytown',
                 'state': 'NY',
                 'zip_code': '12345',
-                'phone_number': '123-456-7890',
+                'phone_number': '+375 (44) 444-44-44',
             },
         )
 

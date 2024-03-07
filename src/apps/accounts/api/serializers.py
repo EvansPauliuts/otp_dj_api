@@ -1,20 +1,19 @@
-from django.contrib.auth import authenticate
-from django.contrib.auth import password_validation
-from django.contrib.auth.models import Group
-from django.contrib.auth.models import Permission
 from django.db import transaction
-from drf_spectacular.utils import OpenApiExample
-from drf_spectacular.utils import extend_schema_serializer
 from rest_framework import serializers
+from django.contrib.auth import authenticate, password_validation
+from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
+from core.utils.serializers import GenericModelSerializer
+from django.contrib.auth.models import Group, Permission
 
 from apps.accounts import tasks
-from apps.accounts.models import JobTitle
-from apps.accounts.models import Organization
-from apps.accounts.models import Token
-from apps.accounts.models import UserA
-from apps.accounts.models import UserFavorite
-from apps.accounts.models import UserProfile
-from core.utils.serializers import GenericModelSerializer
+from apps.accounts.models import (
+    User,
+    Token,
+    JobTitle,
+    UserProfile,
+    Organization,
+    UserFavorite,
+)
 
 
 class PermissionSerializer(serializers.ModelSerializer):
@@ -146,7 +145,7 @@ class UserSerializer(GenericModelSerializer):
     )
 
     class Meta:
-        model = UserA
+        model = User
         fields = '__all__'
         read_only_fields = (
             'id',
@@ -192,8 +191,8 @@ class UserSerializer(GenericModelSerializer):
         profile_data['organization'] = organization
         profile_data['business_unit'] = business_unit
 
-        new_password = UserA.objects.make_random_password()
-        user = UserA.objects.create_user(
+        new_password = User.objects.make_random_password()
+        user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
             password=new_password,
@@ -228,7 +227,7 @@ class MinimalUserSerializer(serializers.ModelSerializer):
     profile = UserProfileSerializer(read_only=True)
 
     class Meta:
-        model = UserA
+        model = User
         fields = ('id', 'username', 'email', 'profile')
 
 
@@ -239,7 +238,7 @@ class JobTitleSerializer(GenericModelSerializer):
         model = JobTitle
         fields = (
             'id',
-            'organization_id',
+            # 'organization_id',
             'status',
             'description',
             'name',
@@ -327,8 +326,8 @@ class ResetPasswordSerializer(serializers.Serializer):
 
     def validate_email(self, value):
         try:
-            user = UserA.objects.get(email=value)
-        except UserA.DoesNotExist as e:
+            user = User.objects.get(email=value)
+        except User.DoesNotExist as e:
             raise serializers.ValidationError(
                 'No user found with the given email exists. Please try again.'
             ) from e
@@ -340,8 +339,8 @@ class ResetPasswordSerializer(serializers.Serializer):
         return value
 
     def save(self, request):
-        user = UserA.objects.get(email=self.validated_data['email'])
-        new_password = UserA.objects.make_random_password()
+        user = User.objects.get(email=self.validated_data['email'])
+        new_password = User.objects.make_random_password()
         user.set_password(new_password)
         user.save()
 
@@ -368,7 +367,7 @@ class UpdateEmailSerializer(serializers.Serializer):
                 {'email': 'New email cannot be the same as the current email.'}
             )
 
-        if UserA.objects.filter(email=email).exists():
+        if User.objects.filter(email=email).exists():
             raise serializers.ValidationError(
                 {'email': 'A user with this email already exists.'},
             )
@@ -383,10 +382,10 @@ class UpdateEmailSerializer(serializers.Serializer):
 
 
 class VerifyTokenSerializer(serializers.Serializer):
-    toekn = serializers.CharField()
+    token = serializers.CharField()
 
     def validate(self, attrs):
-        token = attrs.get('toekn')
+        token = attrs.get('token')
 
         if Token.objects.filter(key=token).exists():
             return attrs
@@ -452,8 +451,8 @@ class TokenProvisionSerializer(serializers.Serializer):
         password = attrs.get('password')
 
         try:
-            UserA.objects.get(username=username)
-        except UserA.DoesNotExist as exc:
+            User.objects.get(username=username)
+        except User.DoesNotExist as exc:
             raise serializers.ValidationError(
                 {'username': 'Username does not exist. Please try again.'},
                 code='username_not_found',

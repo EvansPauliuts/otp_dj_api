@@ -1,7 +1,6 @@
+from core.admin import ExportToCSVMixin, ExportToJSONMixin, admin
+
 from apps.users.models import PendingUser
-from core.admin import ExportToCSVMixin
-from core.admin import ExportToJSONMixin
-from core.admin import admin
 
 
 @admin.register(PendingUser)
