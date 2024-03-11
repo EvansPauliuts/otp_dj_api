@@ -38,6 +38,11 @@ def user():
 
 
 @pytest.fixture
+def user_multiple():
+    yield UserFactory.create_batch(10)
+
+
+@pytest.fixture
 def user_profile():
     yield ProfileFactory()
 
