@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-
 class BooleanFilter(admin.SimpleListFilter):
     def lookups(self, request, model_admin):
         return [

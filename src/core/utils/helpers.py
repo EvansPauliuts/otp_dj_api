@@ -5,10 +5,10 @@ from functools import wraps
 from PIL import Image
 from django.db import models
 from dateutil.parser import parse
-from apps.accounts.models import BusinessUnit
-
 
 def get_or_create_business_unit(*, bs_name):
+    from apps.accounts.models import BusinessUnit
+
     business_unit, _ = BusinessUnit.objects.get_or_create(name=bs_name)
     return business_unit
 

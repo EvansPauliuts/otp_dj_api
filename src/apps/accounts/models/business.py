@@ -8,7 +8,6 @@ from django.db.models.functions import Lower
 
 from apps.accounts.utils import PhoneValidator, business_unit_contract_upload_to
 
-
 class BusinessUnit(TimeStampedModel):
     class BusinessUnitStatusChoices(models.TextChoices):
         ACTIVE = 'A', 'Active'

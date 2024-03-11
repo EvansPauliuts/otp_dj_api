@@ -5,7 +5,6 @@ from rest_framework.permissions import (
     DjangoModelPermissions,
 )
 
-
 class SuperUserOnly(BasePermission):
     def has_permission(self, request, view):
         return request.user.is_superuser

@@ -1,7 +1,6 @@
 from models.account import User
 from django.contrib.auth.backends import ModelBackend
 
-
 class UserBackend(ModelBackend):
     def get_user(self, user_id):
         try:

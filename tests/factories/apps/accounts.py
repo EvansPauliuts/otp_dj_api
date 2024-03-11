@@ -10,7 +10,6 @@ from apps.accounts.models import (
     Organization,
 )
 
-
 class BusinessUnitFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = BusinessUnit

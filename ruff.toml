@@ -33,7 +33,7 @@ select = [
     "ICN",   # flake8-import-conventions
     "ASYNC", # flake8-async
     "C4",    # flake8-comprehensions
-#    "Q",     # flake8-quotes
+    "Q",     # flake8-quotes
     "RET",   # flake8-return
     "SIM",   # flake8-simplify
     "TID",   # flake8-tidy-imports
@@ -57,6 +57,8 @@ select = [
     "FURB",  # refurb
 ]
 ignore = [
+  "COM812",
+  "ISC001",
   "FBT002",
   "S101",
   "PLR2004",
@@ -71,11 +73,12 @@ ignore = [
   "PLR6201",
   "G004",
   "N818",
+  "E731",
+  "I001",
 ]
 
 [lint.isort]
-#known-first-party = ["my_module1", "my_module2"]
-#lines-after-imports = 1
+lines-after-imports = 1
 length-sort = true
 length-sort-straight = true
 
@@ -87,3 +90,6 @@ preview = true
 exclude = ["*.pyi"]
 quote-style = "single"
 docstring-code-format = true
+
+[lint.flake8-quotes]
+inline-quotes = "single"

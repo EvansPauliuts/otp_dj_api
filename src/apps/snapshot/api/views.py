@@ -7,7 +7,6 @@ from rest_framework.viewsets import ModelViewSet
 
 from apps.snapshot.models import Page, Post, Snapshot
 
-
 class PageViewSet(ModelViewSet):
     queryset = Page.objects.all()
     http_method_names = ('get',)

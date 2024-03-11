@@ -6,7 +6,6 @@ from django.core.management import BaseCommand
 
 from apps.accounts.models import User, JobTitle, UserProfile, Organization
 
-
 class Command(BaseCommand):
     help = 'Creates system user account and organization'
 

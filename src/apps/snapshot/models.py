@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 from django.db import models
 from core.models import TimeStampedModel
 
-
 class Page(TimeStampedModel):
     name = models.CharField(max_length=500)
 

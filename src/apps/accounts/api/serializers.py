@@ -15,7 +15,6 @@ from apps.accounts.models import (
     UserFavorite,
 )
 
-
 class PermissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Permission
@@ -187,7 +186,7 @@ class UserSerializer(GenericModelSerializer):
                 },
             )
 
-        profile_data = validated_data.pop('profile_data', {})
+        profile_data = validated_data.pop('profile', {})
         profile_data['organization'] = organization
         profile_data['business_unit'] = business_unit
 

@@ -7,7 +7,6 @@ from django.db.models.functions import Lower
 from .business import BusinessUnit
 from .organization import Organization
 
-
 class Depot(models.Model):
     id = models.UUIDField(
         primary_key=True,

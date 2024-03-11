@@ -2,7 +2,6 @@ from django.contrib.auth.base_user import BaseUserManager
 
 from apps.users.common import SystemRoleEnum
 
-
 class CustomUserManager(BaseUserManager):
     def create_user_with_phone(self, phone, **extra_fields):
         if not phone:

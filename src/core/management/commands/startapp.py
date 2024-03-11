@@ -2,7 +2,6 @@ from django.conf import settings
 from django.core.management.base import CommandError
 from django.core.management.commands.startapp import Command as BaseCommand
 
-
 class Command(BaseCommand):
     help = 'Create app local in folder'
 

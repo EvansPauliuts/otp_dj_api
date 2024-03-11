@@ -23,15 +23,15 @@ from django.contrib.auth.models import (
 )
 from django.db.models.functions import Lower
 
-from apps.accounts import tasks, services
+from apps.accounts import tasks
 from apps.accounts.utils import PhoneValidator
+from apps.accounts.services import profile
 from apps.accounts.validators import validate_org_timezone
 
 from .job import JobTitle
 from .business import BusinessUnit
 from .department import Department
 from .organization import Organization
-
 
 class CustomGroup(TimeStampedModel):
     name = models.CharField(max_length=150)
@@ -352,7 +352,7 @@ class Token(models.Model):
 
     def save(self, *args, **kwargs) -> None:
         if not self.key:
-            self.key = services.generate_key()
+            self.key = profile.generate_key()
 
         super().save(*args, **kwargs)
 

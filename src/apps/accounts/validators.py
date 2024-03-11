@@ -1,6 +1,5 @@
 from django.core.exceptions import ValidationError
 
-
 def validate_org_timezone(value):
     import pytz
 
