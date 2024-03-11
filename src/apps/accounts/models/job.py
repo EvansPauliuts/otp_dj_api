@@ -9,6 +9,7 @@ from core.models import (
 from django.urls import reverse
 from django.db.models.functions import Lower
 
+
 class JobTitle(GenericModel):
     class JobFunctionChoices(models.TextChoices):
         MANAGER = 'MANAGER', 'Manager'

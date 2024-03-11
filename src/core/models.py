@@ -5,6 +5,7 @@ from django.core import checks
 from django.utils import timezone
 from django.db.models import CharField
 
+
 class Timestamped(models.Model):
     id = models.UUIDField(
         primary_key=True,

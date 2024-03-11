@@ -3,6 +3,7 @@ from rest_framework import HTTP_HEADER_ENCODING, exceptions, authentication
 
 from apps.accounts.models.account import Token
 
+
 def get_authorization_header(request):
     auth = request.headers.get('authorization', b'')
     if isinstance(auth, str):

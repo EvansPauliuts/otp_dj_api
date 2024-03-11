@@ -131,7 +131,7 @@ class ResetPasswordView(views.APIView):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(request=request)
             return Response(
                 {
                     'message': 'Password reset successfully. '
@@ -155,7 +155,7 @@ class UpdateEmailView(views.APIView):
             context={'request': request},
         )
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(request=request)
             return Response(
                 {'message': 'Email successfully updated.'},
                 status=status.HTTP_200_OK,
@@ -226,7 +226,7 @@ class TokenProvisionView(ObtainAuthToken):
         user = serializer.validated_data['user']
         token, _ = Token.objects.get_or_create(user=user)
 
-        if user.is_expired:
+        if token.is_expired:
             token.delete()
             Token.objects.create(user=user)
 

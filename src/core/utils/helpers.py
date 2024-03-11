@@ -6,6 +6,7 @@ from PIL import Image
 from django.db import models
 from dateutil.parser import parse
 
+
 def get_or_create_business_unit(*, bs_name):
     from apps.accounts.models import BusinessUnit
 

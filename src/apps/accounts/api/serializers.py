@@ -15,6 +15,7 @@ from apps.accounts.models import (
     UserFavorite,
 )
 
+
 class PermissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Permission

@@ -3,6 +3,7 @@ import csv
 from django.core import serializers
 from django.http.response import HttpResponse
 
+
 class ResponseTypeContext:
     file_type = None
 

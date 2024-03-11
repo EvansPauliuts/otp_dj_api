@@ -75,6 +75,10 @@ ignore = [
   "N818",
   "E731",
   "I001",
+  "ERA001", # Comment
+  "E303",
+  "S105",
+  "PLR0904",
 ]
 
 [lint.isort]

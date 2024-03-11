@@ -11,6 +11,7 @@ from apps.users.utils import PhoneValidator
 from apps.users.common import ROLE_CHOICE, TOKEN_TYPE_CHOICE, SystemRoleEnum
 from apps.users.managers import CustomUserManager
 
+
 class PendingUser(TimeStampedModel):
     phone = models.CharField(
         max_length=19,

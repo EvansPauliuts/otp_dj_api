@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 
 from apps.accounts.services import profile
 
+
 @shared_task(
     name='generate_thumbnail',
     bind=True,

@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from rest_framework import status
 from django.core.exceptions import ValidationError
 
+
 class BusinessUnitMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response

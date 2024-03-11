@@ -9,6 +9,7 @@ from apps.accounts.validators import validate_org_timezone
 
 from .business import BusinessUnit
 
+
 class Organization(TimeStampedModel):
     class OrganizationType(models.TextChoices):
         ASSET = 'ASSET', 'Asset'

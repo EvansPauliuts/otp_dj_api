@@ -8,6 +8,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from apps.accounts.models import User, JobTitle, UserProfile, Organization
 
+
 class Command(BaseCommand):
     help = 'Create test users.'
 

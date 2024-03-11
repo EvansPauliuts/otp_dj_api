@@ -32,6 +32,7 @@ from .serializers import (
     CreatePasswordFromResetOTPSerializer,
 )
 
+
 class CustomObtainTokenPairView(TokenObtainPairView):
     serializer_class = CustomObtainTokenPairSerializer
 

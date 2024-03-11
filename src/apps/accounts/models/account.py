@@ -33,6 +33,7 @@ from .business import BusinessUnit
 from .department import Department
 from .organization import Organization
 
+
 class CustomGroup(TimeStampedModel):
     name = models.CharField(max_length=150)
     permissions = models.ManyToManyField(

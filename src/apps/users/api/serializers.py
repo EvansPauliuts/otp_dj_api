@@ -11,6 +11,7 @@ from apps.users.utils import clean_phone, generate_otp, is_admin_user
 from apps.users.common import TokenEnum
 from apps.users.models import User, Token, FileModel, ImageModel, PendingUser
 
+
 class ListUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
