@@ -2,20 +2,19 @@ import io
 import time
 from functools import wraps
 
-from PIL import Image
-from django.db import models
+from apps.accounts.models import BusinessUnit
 from dateutil.parser import parse
+from django.db import models
+from PIL import Image
 
 
 def get_or_create_business_unit(*, bs_name):
-    from apps.accounts.models import BusinessUnit
-
     business_unit, _ = BusinessUnit.objects.get_or_create(name=bs_name)
     return business_unit
 
 
 def get_pk_value(*, instance):
-    pk_field = instance._meta.pk.name
+    pk_field = instance._meta.pk.name  # noqa: SLF001
     pk = getattr(instance, pk_field, None)
 
     if isinstance(pk, models.Model):

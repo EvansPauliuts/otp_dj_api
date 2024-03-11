@@ -1,7 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import datetime
+from datetime import timedelta
 
-from django.db import models
 from core.models import TimeStampedModel
+from django.db import models
 
 
 class Page(TimeStampedModel):

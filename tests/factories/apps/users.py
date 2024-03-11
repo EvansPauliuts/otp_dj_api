@@ -1,6 +1,7 @@
 import factory
+from apps.users.models import Token
+from apps.users.models import User
 from faker import Faker
-from apps.users.models import User, Token
 
 fake = Faker()
 

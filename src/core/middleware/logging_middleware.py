@@ -1,15 +1,17 @@
 import logging
 
-from django.utils.timezone import now
 from django.utils.deprecation import MiddlewareMixin
+from django.utils.timezone import now
 
 logger = logging.getLogger(__name__)
 
 
 class RocketLoggingMiddleware(MiddlewareMixin):
     def process_response(self, request, response):
-        duration = (now() - request._logging_start_time).total_seconds()
-        handler = request.resolver_match.url_name if request.resolver_match else 'UNKNOWN'
+        duration = (now() - request._logging_start_time).total_seconds()  # noqa: SLF001
+        handler = (
+            request.resolver_match.url_name if request.resolver_match else 'UNKNOWN'
+        )
         client = (
             f"{request.META.get('REMOTE_ADDR', '')}:"
             f"{request.META.get('REMOTE_PORT', 'UNKNOWN')}"
@@ -32,4 +34,4 @@ class RocketLoggingMiddleware(MiddlewareMixin):
         return response
 
     def process_request(self, request):
-        request._logging_start_time = now()
+        request._logging_start_time = now()  # noqa: SLF001

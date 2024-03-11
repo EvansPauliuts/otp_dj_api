@@ -1,7 +1,7 @@
 import pytest
+from apps.accounts.models import JobTitle
 from django.urls import reverse
 from rest_framework import status
-from apps.accounts.models import JobTitle
 
 pytestmark = pytest.mark.django_db
 

@@ -1,4 +1,6 @@
-from core.admin import ExportToCSVMixin, ExportToJSONMixin, admin
+from core.admin import ExportToCSVMixin
+from core.admin import ExportToJSONMixin
+from core.admin import admin
 
 from apps.users.models import PendingUser
 

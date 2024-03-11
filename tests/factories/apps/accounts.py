@@ -1,14 +1,12 @@
 import secrets
 
 import factory
-from apps.accounts.models import (
-    User,
-    Token,
-    JobTitle,
-    UserProfile,
-    BusinessUnit,
-    Organization,
-)
+from apps.accounts.models import BusinessUnit
+from apps.accounts.models import JobTitle
+from apps.accounts.models import Organization
+from apps.accounts.models import Token
+from apps.accounts.models import User
+from apps.accounts.models import UserProfile
 
 
 class BusinessUnitFactory(factory.django.DjangoModelFactory):
@@ -71,7 +69,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 
         user, _ = User.objects.get_or_create(
             username=kwargs['username'],
-            password='<PASSWORD>',
+            password='<PASSWORD>',  # noqa: S106
             email=kwargs['email'],
             is_staff=True,
             is_superuser=True,

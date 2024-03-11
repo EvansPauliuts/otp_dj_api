@@ -1,22 +1,20 @@
-from django.conf import settings
-from django.urls import path
-from django.contrib import admin
 from core.conf.environ import env
-from rest_framework.routers import DefaultRouter
+from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import path
+from rest_framework.routers import DefaultRouter
 
-from apps.accounts.api.views import (
-    UserViewSet,
-    GroupViewSet,
-    UserDetailView,
-    UserLogoutView,
-    JobTitleViewSet,
-    UpdateEmailView,
-    PermissionViewSet,
-    ResetPasswordView,
-    TokenProvisionView,
-    UpdatePasswordView,
-)
+from apps.accounts.api.views import GroupViewSet
+from apps.accounts.api.views import JobTitleViewSet
+from apps.accounts.api.views import PermissionViewSet
+from apps.accounts.api.views import ResetPasswordView
+from apps.accounts.api.views import TokenProvisionView
+from apps.accounts.api.views import UpdateEmailView
+from apps.accounts.api.views import UpdatePasswordView
+from apps.accounts.api.views import UserDetailView
+from apps.accounts.api.views import UserLogoutView
+from apps.accounts.api.views import UserViewSet
 
 app_name = 'users'
 

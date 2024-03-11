@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+
 from apps.accounts.models import Token
 
 User = get_user_model()

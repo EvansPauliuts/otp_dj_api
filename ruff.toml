@@ -1,99 +1,109 @@
-target-version = "py312"
 extend-exclude = ["src/apps/*/migrations/*", "static", "staticfilles", "templates"]
 include = ["src/**/*.py", "scripts/**/*.py", "tests/**/*.py"]
 exclude = [
-    ".git",
-    ".pyenv",
-    ".pytest_cache",
-    ".pytype",
-    ".ruff_cache",
-    ".venv",
-    "venv",
+  ".bzr",
+  ".direnv",
+  ".eggs",
+  ".git",
+  ".git-rewrite",
+  ".hg",
+  ".mypy_cache",
+  ".nox",
+  ".pants.d",
+  ".pytype",
+  ".ruff_cache",
+  ".svn",
+  ".tox",
+  ".venv",
+  "__pypackages__",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "node_modules",
+  "venv",
+  "*/migrations/*.py",
+  "staticfiles/*"
 ]
-line-length = 100
+line-length = 88
 indent-width = 4
+target-version = "py312"
 fix = true
 
 [lint]
 preview = true
 select = [
-    "F",     # Pyflakes
-    "E",     # pycodestyle errors
-    "W",     # pycodestyle warnings
-    "C90",   # mccabe
-    "I",     # isort
-    "N",     # pep8-naming
-    "UP",    # pyupgrade
-    "PL",    # pylint
-    "PERF",  # perflint
-    "S",     # flake8-bandit
-    "FBT",   # flake8-boolean-trap
-    "B",     # flake8-bugbear
-    "DJ",    # flake8-django
-    "ICN",   # flake8-import-conventions
-    "ASYNC", # flake8-async
-    "C4",    # flake8-comprehensions
-    "Q",     # flake8-quotes
-    "RET",   # flake8-return
-    "SIM",   # flake8-simplify
-    "TID",   # flake8-tidy-imports
-    "TCH",   # flake8-type-checking
-    "PTH",   # flake8-use-pathlib
-    "INT",   # flake8-gettext
-    "SLOT",  # flake8-slots
-    "SLF",   # flake8-self
-    "RSE",   # flake8-raise
-    "PYI",   # flake8-pyi"
-    "PIE",   # flake8-pie"
-    "ISC",   # flake8-implicit-str-concat
-    "A",     # flake8-builtins
-    "COM",   # flake8-commas
-    "T10",   # flake8-debugger
-    "YTT",   # flake8-2020
-    "G",     # flake8-logging-format
-    "ERA",   # eradicate
-    "RUF",   # ruff
-    "FLY",   # flynt
-    "FURB",  # refurb
+  "F",     # Pyflakes
+  "E",     # pycodestyle errors
+  "W",     # pycodestyle warnings
+  "C90",   # mccabe
+  "I",     # isort
+  "N",     # pep8-naming
+  "UP",    # pyupgrade
+  "PL",    # pylint
+  "PERF",  # perflint
+  "BLE",
+  "S",     # flake8-bandit
+  "FBT",   # flake8-boolean-trap
+  "B",     # flake8-bugbear
+  "DJ",    # flake8-django
+  "ICN",   # flake8-import-conventions
+  "ASYNC", # flake8-async
+  "C4",    # flake8-comprehensions
+  "Q",     # flake8-quotes
+  "RET",   # flake8-return
+  "SIM",   # flake8-simplify
+  "TID",   # flake8-tidy-imports
+  "TCH",   # flake8-type-checking
+  "PTH",   # flake8-use-pathlib
+  "INT",   # flake8-gettext
+  "SLOT",  # flake8-slots
+  "SLF",   # flake8-self
+  "RSE",   # flake8-raise
+  "PYI",   # flake8-pyi"
+  "PIE",   # flake8-pie"
+  "ISC",   # flake8-implicit-str-concat
+  "A",     # flake8-builtins
+  "COM",   # flake8-commas
+  "T10",   # flake8-debugger
+  "YTT",   # flake8-2020
+  "G",     # flake8-logging-format
+  "ERA",   # eradicate
+  "RUF",   # ruff
+  "FLY",   # flynt
+  "FURB",  # refurb
 ]
 ignore = [
-  "COM812",
-  "ISC001",
-  "FBT002",
   "S101",
-  "PLR2004",
-  "PLR6301",
-  "S106",
   "RUF012",
-  "SLF001",
-  "PLR0914",
-  "PLC0415",
-  "S311",
-  "PERF401",
-  "PLR6201",
-  "G004",
-  "N818",
-  "E731",
-  "I001",
-  "ERA001", # Comment
-  "E303",
+  "SIM102",
+  "PLR6301",
+  "ERA001",
   "S105",
-  "PLR0904",
+  "PLR6201",
 ]
+fixable = ["ALL"]
+unfixable = []
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [lint.isort]
-lines-after-imports = 1
-length-sort = true
-length-sort-straight = true
+force-single-line = true
 
-[lint.pydocstyle]
-convention = "google"
+#[lint.pydocstyle]
+#convention = "google"
 
 [format]
-preview = true
-exclude = ["*.pyi"]
-quote-style = "single"
-docstring-code-format = true
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+#preview = true
+#exclude = ["*.pyi"]
+#quote-style = "single"
+#docstring-code-format = true
 
 [lint.flake8-quotes]
 inline-quotes = "single"
+
+[lint.pylint]
+max-locals = 20
+max-public-methods = 30

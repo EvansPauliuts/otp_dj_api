@@ -1,36 +1,33 @@
 import uuid
 
-from django.db import models, transaction
-from core.models import (
-    ChoiceField,
-    GenericModel,
-    TimezoneChoices,
-    TimeStampedModel,
-    PrimaryStatusChoices,
-)
-from django.urls import reverse
-from django.utils import timezone
-from localflavor.us.models import USZipCodeField
+from core.models import ChoiceField
+from core.models import GenericModel
+from core.models import PrimaryStatusChoices
+from core.models import TimeStampedModel
+from core.models import TimezoneChoices
+from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import BaseUserManager
+from django.contrib.auth.models import GroupManager
+from django.contrib.auth.models import Permission
+from django.contrib.auth.models import PermissionsMixin
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
-from django.utils.functional import cached_property
-from django.contrib.auth.models import (
-    Permission,
-    GroupManager,
-    BaseUserManager,
-    AbstractBaseUser,
-    PermissionsMixin,
-)
+from django.db import models
+from django.db import transaction
 from django.db.models.functions import Lower
+from django.urls import reverse
+from django.utils import timezone
+from django.utils.functional import cached_property
+from localflavor.us.models import USZipCodeField
 
 from apps.accounts import tasks
-from apps.accounts.utils import PhoneValidator
 from apps.accounts.services import profile
+from apps.accounts.utils import PhoneValidator
 from apps.accounts.validators import validate_org_timezone
 
-from .job import JobTitle
 from .business import BusinessUnit
 from .department import Department
+from .job import JobTitle
 from .organization import Organization
 
 

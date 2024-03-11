@@ -1,7 +1,12 @@
-from .job import JobTitle
-from .account import User, Token, CustomGroup, UserProfile, UserFavorite
+from .account import CustomGroup
+from .account import Token
+from .account import User
+from .account import UserFavorite
+from .account import UserProfile
 from .business import BusinessUnit
-from .department import Depot, Department
+from .department import Department
+from .department import Depot
+from .job import JobTitle
 from .organization import Organization
 
 __all__ = [

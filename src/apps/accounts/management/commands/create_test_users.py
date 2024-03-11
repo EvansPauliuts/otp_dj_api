@@ -1,12 +1,16 @@
 import random
 import string
 
+from core.utils.helpers import get_or_create_business_unit
+from django.core.management.base import BaseCommand
+from django.core.management.base import CommandError
 from django.db import transaction
 from rich.progress import Progress
-from core.utils.helpers import get_or_create_business_unit
-from django.core.management.base import BaseCommand, CommandError
 
-from apps.accounts.models import User, JobTitle, UserProfile, Organization
+from apps.accounts.models import JobTitle
+from apps.accounts.models import Organization
+from apps.accounts.models import User
+from apps.accounts.models import UserProfile
 
 
 class Command(BaseCommand):
@@ -17,7 +21,8 @@ class Command(BaseCommand):
         business_unit = get_or_create_business_unit(bs_name='Transportation')
 
         system_org_answer = input(
-            "What is the SCAC of organization you'd like to add the test users to? (Scac Code) ",
+            "What is the SCAC of organization you'd like "
+            "to add the test users to? (Scac Code) ",
         )
         number_of_users_answer = input('How many test users would you like to create? ')
 
@@ -62,7 +67,10 @@ class Command(BaseCommand):
 
                 email = f'testuser-{i}@dev.app'
                 password = 'testuser'.join(
-                    random.choices(string.ascii_uppercase + string.digits, k=8),
+                    random.choices(  # noqa: S311
+                        string.ascii_uppercase + string.digits,
+                        k=8,
+                    ),
                 )
 
                 new_user = User(

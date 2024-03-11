@@ -1,15 +1,19 @@
 import uuid
-from datetime import UTC, datetime
+from datetime import UTC
+from datetime import datetime
 
-from django.db import models
 from core.models import TimeStampedModel
 from django.conf import settings
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
 from django.contrib.postgres.fields import ArrayField
+from django.db import models
 
-from apps.users.utils import PhoneValidator
-from apps.users.common import ROLE_CHOICE, TOKEN_TYPE_CHOICE, SystemRoleEnum
+from apps.users.common import ROLE_CHOICE
+from apps.users.common import TOKEN_TYPE_CHOICE
+from apps.users.common import SystemRoleEnum
 from apps.users.managers import CustomUserManager
+from apps.users.utils import PhoneValidator
 
 
 class PendingUser(TimeStampedModel):

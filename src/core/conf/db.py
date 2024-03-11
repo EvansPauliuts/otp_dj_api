@@ -1,5 +1,5 @@
-from core.conf.environ import env
 from core.conf.boilerplate import BASE_DIR
+from core.conf.environ import env
 
 if env('DB_USE_DOCKER', cast=int):
     DATABASES = {

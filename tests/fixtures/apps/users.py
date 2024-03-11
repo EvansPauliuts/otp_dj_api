@@ -3,7 +3,8 @@ from django.urls import reverse
 from pytest_factoryboy import register
 from rest_framework.test import APIClient
 
-from tests.factories.apps.users import UserFactory, TokenFactory
+from tests.factories.apps.users import TokenFactory
+from tests.factories.apps.users import UserFactory
 
 register(UserFactory)
 register(TokenFactory)
@@ -36,6 +37,7 @@ def authenticate_user(
     auth_user_password,
 ):
     def _user(
+        *,
         verified=True,
         is_active=True,
         is_admin=False,

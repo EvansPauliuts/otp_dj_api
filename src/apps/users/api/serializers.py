@@ -1,15 +1,24 @@
-from datetime import UTC, datetime
+from datetime import UTC
+from datetime import datetime
 
-from django.db import transaction
-from rest_framework import exceptions, serializers
-from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth import authenticate
+from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
+from django.db import transaction
+from rest_framework import exceptions
+from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from apps.users.tasks import send_phone_notification
-from apps.users.utils import clean_phone, generate_otp, is_admin_user
 from apps.users.common import TokenEnum
-from apps.users.models import User, Token, FileModel, ImageModel, PendingUser
+from apps.users.models import FileModel
+from apps.users.models import ImageModel
+from apps.users.models import PendingUser
+from apps.users.models import Token
+from apps.users.models import User
+from apps.users.tasks import send_phone_notification
+from apps.users.utils import clean_phone
+from apps.users.utils import generate_otp
+from apps.users.utils import is_admin_user
 
 
 class ListUserSerializer(serializers.ModelSerializer):

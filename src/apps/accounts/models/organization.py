@@ -1,8 +1,8 @@
-from django.db import models
 from core.models import TimeStampedModel
+from django.db import models
 from django.urls import reverse
-from localflavor.us.models import USZipCodeField
 from django.utils.functional import cached_property
+from localflavor.us.models import USZipCodeField
 
 from apps.accounts.utils import PhoneValidator
 from apps.accounts.validators import validate_org_timezone

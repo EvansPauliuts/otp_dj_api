@@ -1,10 +1,11 @@
 import logging
 import secrets
 
-from PIL import Image, UnidentifiedImageError
 from core.utils.helpers import optimize_image
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
+from PIL import Image
+from PIL import UnidentifiedImageError
 
 log = logging.getLogger(__name__)
 
@@ -39,12 +40,17 @@ def generate_thumbnail(
 
     except* UnidentifiedImageError as exc:
         log.error(
-            f'Uploaded image for {user_profile.user.username} is invalid. Exception: {exc}',
+            'Uploaded image for %s is invalid. Exception: %s',
+            user_profile.user.username,
+            exc_info=exc,
         )
         raise ValidationError(
             {'profile_picture': 'The image is invalid. Please try again.'},
             code='invalid',
         ) from exc
     except* Exception as exc:
-        log.exception(f'Failed to generate thumbnail for {user_profile.user.username}.')
+        log.exception(
+            'Failed to generate thumbnail for %s.',
+            user_profile.user.username,
+        )
         raise exc

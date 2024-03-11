@@ -1,9 +1,8 @@
+import pytz
 from django.core.exceptions import ValidationError
 
 
 def validate_org_timezone(value):
-    import pytz
-
     try:
         pytz.timezone(value)
     except pytz.exceptions.UnknownTimeZoneError as e:

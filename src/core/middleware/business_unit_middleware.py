@@ -1,6 +1,6 @@
+from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from rest_framework import status
-from django.core.exceptions import ValidationError
 
 
 class BusinessUnitMiddleware:
@@ -11,7 +11,8 @@ class BusinessUnitMiddleware:
         try:
             if request.user.is_authenticated and not request.user.business_unit.paid:
                 raise ValidationError(
-                    'Your business unit is not paid, please contact your Account Manager',
+                    'Your business unit is not paid, please '
+                    'contact your Account Manager',
                 )
 
         except ValidationError as e:

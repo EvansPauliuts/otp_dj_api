@@ -1,9 +1,9 @@
 import uuid
 
-from django.db import models
 from django.core import checks
-from django.utils import timezone
+from django.db import models
 from django.db.models import CharField
+from django.utils import timezone
 
 
 class Timestamped(models.Model):

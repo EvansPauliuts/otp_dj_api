@@ -1,5 +1,7 @@
 from django.utils import timezone
-from rest_framework import HTTP_HEADER_ENCODING, exceptions, authentication
+from rest_framework import HTTP_HEADER_ENCODING
+from rest_framework import authentication
+from rest_framework import exceptions
 
 from apps.accounts.models.account import Token
 
@@ -15,15 +17,19 @@ class BearerTokenAuthentication(authentication.BaseAuthentication):
     keyword = 'Bearer'
     model = Token
 
+    AUTH_LENGTH = 2
+    MAX_SECONDS = 60
+
     def authenticate(self, request):
         auth = get_authorization_header(request).split()
 
         if auth and auth[0].lower() == self.keyword.lower().encode():
             if len(auth) == 1:
                 raise exceptions.AuthenticationFailed(
-                    'Invalid token header. No credentials provided. Please login again.',
+                    'Invalid token header. No credentials provided. '
+                    'Please login again.',
                 )
-            if len(auth) > 2:
+            if len(auth) > self.AUTH_LENGTH:
                 raise exceptions.AuthenticationFailed(
                     'Invalid token header. Token string should '
                     'not contain spaces. Please login again.',
@@ -33,7 +39,8 @@ class BearerTokenAuthentication(authentication.BaseAuthentication):
                 token = auth[1].decode()
             except UnicodeError as e:
                 raise exceptions.AuthenticationFailed(
-                    'Invalid token header. Token string should not contain invalid characters.',
+                    'Invalid token header. Token string should'
+                    ' not contain invalid characters.',
                 ) from e
         else:
             token = request.COOKIES.get('auth_token')
@@ -63,7 +70,11 @@ class BearerTokenAuthentication(authentication.BaseAuthentication):
 
     @staticmethod
     def validate_token(token):
-        if not token.last_used or (timezone.now() - token.last_used).total_seconds() > 60:
+        if (
+            not token.last_used
+            or (timezone.now() - token.last_used).total_seconds()
+            > BearerTokenAuthentication.MAX_SECONDS
+        ):
             token.last_used = timezone.now()
             token.save(update_fields=['last_used'])
 
@@ -74,4 +85,6 @@ class BearerTokenAuthentication(authentication.BaseAuthentication):
             )
 
         if not token.user.is_active:
-            raise exceptions.AuthenticationFailed('User inactive or deleted. Please login again.')
+            raise exceptions.AuthenticationFailed(
+                'User inactive or deleted. Please login again.',
+            )

@@ -1,4 +1,5 @@
-from threading import local, current_thread
+from threading import current_thread
+from threading import local
 
 from apps.accounts.models import User
 

@@ -1,13 +1,11 @@
 import uuid
 
+from core.models import ChoiceField
+from core.models import GenericModel
+from core.models import PrimaryStatusChoices
 from django.db import models
-from core.models import (
-    ChoiceField,
-    GenericModel,
-    PrimaryStatusChoices,
-)
-from django.urls import reverse
 from django.db.models.functions import Lower
+from django.urls import reverse
 
 
 class JobTitle(GenericModel):

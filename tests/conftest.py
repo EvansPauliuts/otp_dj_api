@@ -3,14 +3,12 @@ import uuid
 import pytest
 from rest_framework.test import APIClient
 
-from tests.factories.apps.accounts import (
-    UserFactory,
-    TokenFactory,
-    ProfileFactory,
-    JobTitleFactory,
-    BusinessUnitFactory,
-    OrganizationFactory,
-)
+from tests.factories.apps.accounts import BusinessUnitFactory
+from tests.factories.apps.accounts import JobTitleFactory
+from tests.factories.apps.accounts import OrganizationFactory
+from tests.factories.apps.accounts import ProfileFactory
+from tests.factories.apps.accounts import TokenFactory
+from tests.factories.apps.accounts import UserFactory
 
 
 def api_client_with_credentials(token, api_client):

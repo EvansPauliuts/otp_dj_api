@@ -1,19 +1,20 @@
-from django.db import transaction
-from rest_framework import serializers
-from django.contrib.auth import authenticate, password_validation
-from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
 from core.utils.serializers import GenericModelSerializer
-from django.contrib.auth.models import Group, Permission
+from django.contrib.auth import authenticate
+from django.contrib.auth import password_validation
+from django.contrib.auth.models import Group
+from django.contrib.auth.models import Permission
+from django.db import transaction
+from drf_spectacular.utils import OpenApiExample
+from drf_spectacular.utils import extend_schema_serializer
+from rest_framework import serializers
 
 from apps.accounts import tasks
-from apps.accounts.models import (
-    User,
-    Token,
-    JobTitle,
-    UserProfile,
-    Organization,
-    UserFavorite,
-)
+from apps.accounts.models import JobTitle
+from apps.accounts.models import Organization
+from apps.accounts.models import Token
+from apps.accounts.models import User
+from apps.accounts.models import UserFavorite
+from apps.accounts.models import UserProfile
 
 
 class PermissionSerializer(serializers.ModelSerializer):
@@ -358,7 +359,8 @@ class UpdateEmailSerializer(serializers.Serializer):
         if not user.check_password(current_password):
             raise serializers.ValidationError(
                 {
-                    'current_password': 'Current password is incorrect. Please try again.',
+                    'current_password': 'Current password is incorrect. '
+                    'Please try again.',
                 },
             )
 

@@ -1,9 +1,11 @@
 import debug_toolbar
 from django.conf import settings
-from django.urls import path, include
-from django.contrib import admin
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import include
+from django.urls import path
+from drf_spectacular.views import SpectacularAPIView
+from drf_spectacular.views import SpectacularSwaggerView
 
 from core.conf.environ import env
 

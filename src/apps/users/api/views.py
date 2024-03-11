@@ -1,36 +1,44 @@
-from rest_framework import status, filters, viewsets, serializers
-from core.permissions import AllowAny, IsAuthenticated
-from drf_spectacular.utils import extend_schema, inline_serializer
+from core.permissions import AllowAny
+from core.permissions import IsAuthenticated
 from django.utils.decorators import method_decorator
-from rest_framework.response import Response
-from rest_framework.settings import api_settings
-from rest_framework.decorators import action
 from django.views.decorators.cache import cache_page
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import inline_serializer
+from rest_framework import filters
+from rest_framework import serializers
+from rest_framework import status
+from rest_framework import viewsets
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework.settings import api_settings
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from apps.users.utils import IsAdmin, delete_cache, is_admin_user
 from apps.users.common import TokenEnum
-from apps.users.models import User, Token, FileModel, ImageModel
 from apps.users.filters import UserFilter
+from apps.users.models import FileModel
+from apps.users.models import ImageModel
+from apps.users.models import Token
+from apps.users.models import User
+from apps.users.utils import IsAdmin
+from apps.users.utils import delete_cache
+from apps.users.utils import is_admin_user
 
-from .serializers import (
-    FileSerializer,
-    EmailSerializer,
-    ImageSerializer,
-    ListUserSerializer,
-    AuthTokenSerializer,
-    MultiFileSerializer,
-    MultiImageSerializer,
-    UpdateUserSerializer,
-    OnboardUserSerializer,
-    PasswordChangeSerializer,
-    AccountVerificationSerializer,
-    CustomObtainTokenPairSerializer,
-    InitiatePasswordResetSerializer,
-    CreatePasswordFromResetOTPSerializer,
-)
+from .serializers import AccountVerificationSerializer
+from .serializers import AuthTokenSerializer
+from .serializers import CreatePasswordFromResetOTPSerializer
+from .serializers import CustomObtainTokenPairSerializer
+from .serializers import EmailSerializer
+from .serializers import FileSerializer
+from .serializers import ImageSerializer
+from .serializers import InitiatePasswordResetSerializer
+from .serializers import ListUserSerializer
+from .serializers import MultiFileSerializer
+from .serializers import MultiImageSerializer
+from .serializers import OnboardUserSerializer
+from .serializers import PasswordChangeSerializer
+from .serializers import UpdateUserSerializer
 
 
 class CustomObtainTokenPairView(TokenObtainPairView):
@@ -251,7 +259,7 @@ class CreateTokenView(ObtainAuthToken):
                 },
                 status=status.HTTP_200_OK,
             )
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             return Response(
                 {'message': str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -284,9 +292,7 @@ class FileViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         files = serializer.validated_data['files']
 
-        files_list = []
-        for file in files:
-            files_list.append(FileModel(file=file))
+        files_list = [FileModel(file=file) for file in files]
 
         if files_list:
             FileModel.objects.bulk_create(files_list)
@@ -310,9 +316,7 @@ class ImageViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         images = serializer.validated_data['images']
 
-        images_list = []
-        for image in images:
-            images_list.append(ImageModel(file=image))
+        images_list = [ImageModel(file=image) for image in images]
 
         if images_list:
             ImageModel.objects.bulk_create(images_list)

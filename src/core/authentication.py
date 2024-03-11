@@ -1,10 +1,12 @@
-from datetime import datetime, timedelta
+from datetime import datetime
+from datetime import timedelta
 
 import jwt
 from django.conf import settings
-from rest_framework import authentication
 from django.contrib.auth import get_user_model
-from rest_framework.exceptions import ParseError, AuthenticationFailed
+from rest_framework import authentication
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import ParseError
 
 User = get_user_model()
 
@@ -25,7 +27,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
             )
         except jwt.exceptions.InvalidSignatureError:
             raise AuthenticationFailed('Invalid signature')  # noqa: B904
-        except Exception:
+        except Exception:  # noqa: BLE001
             raise ParseError  # noqa: B904
 
         username_or_phone_number = payload.get('user_identifier')
@@ -49,7 +51,8 @@ class JWTAuthentication(authentication.BaseAuthentication):
             'user_identifier': user.username,
             'exp': int(
                 (
-                    datetime.now() + timedelta(hours=settings.JWT_CONF['TOKEN_LIFETIME_HOURS'])
+                    datetime.now()
+                    + timedelta(hours=settings.JWT_CONF['TOKEN_LIFETIME_HOURS'])
                 ).timestamp(),
             ),
             'iat': datetime.now().timestamp(),

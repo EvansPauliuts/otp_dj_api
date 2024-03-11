@@ -1,23 +1,23 @@
-import pytest
 from io import BytesIO
-from PIL import Image
 from unittest.mock import patch
-from django.urls import reverse
-from rest_framework.exceptions import ValidationError
-from rest_framework import status
-from django.contrib.auth import get_user_model
-from rest_framework.test import APIClient
-from django.core.files.uploadedfile import SimpleUploadedFile
-from django.core.files.base import ContentFile
-from django.test import RequestFactory
 
-from tests.factories.apps.accounts import JobTitleFactory, UserFactory
+import pytest
 from apps.accounts.api.serializers import UserSerializer
+from apps.accounts.selectors import get_user_auth_token_from_request
+from apps.accounts.selectors import get_users_by_organization_id
 from apps.accounts.tasks import generate_thumbnail_task
-from apps.accounts.selectors import (
-    get_users_by_organization_id,
-    get_user_auth_token_from_request,
-)
+from django.contrib.auth import get_user_model
+from django.core.files.base import ContentFile
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import RequestFactory
+from django.urls import reverse
+from PIL import Image
+from rest_framework import status
+from rest_framework.exceptions import ValidationError
+from rest_framework.test import APIClient
+
+from tests.factories.apps.accounts import JobTitleFactory
+from tests.factories.apps.accounts import UserFactory
 
 User = get_user_model()
 
@@ -66,7 +66,12 @@ class TestUser:
         assert response.data['username'] == payload['username']
         assert response.data['email'] == payload['email']
 
-    def test_user_with_email_exists_error(self, api_client, organization, business_unit):
+    def test_user_with_email_exists_error(
+        self,
+        api_client,
+        organization,
+        business_unit,
+    ):
         payload = {
             'username': 'test_user2',
             'email': 'test_user@example.com',
@@ -126,7 +131,7 @@ class TestUser:
             reverse(
                 'users:users-detail',
                 kwargs={'pk': user_api.data['id']},
-            )
+            ),
         )
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert response.data is None
@@ -231,7 +236,10 @@ class TestUser:
             == 'No user found with the given email exists. Please try again.'
         )
 
-    def test_validate_reset_password_with_invalid_email(self, unauthenticated_api_client):
+    def test_validate_reset_password_with_invalid_email(
+        self,
+        unauthenticated_api_client,
+    ):
         response = unauthenticated_api_client.post(
             reverse('users:reset_password'),
             data={'email': 'random'},
@@ -239,7 +247,11 @@ class TestUser:
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data['email'][0] == 'Enter a valid email address.'
 
-    def test_validate_reset_password_with_inactive_user(self, unauthenticated_api_client, user):
+    def test_validate_reset_password_with_inactive_user(
+        self,
+        unauthenticated_api_client,
+        user,
+    ):
         user.is_active = False
         user.save()
 
@@ -310,7 +322,10 @@ class TestUser:
         )
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert response.data['email'][0] == 'New email cannot be the same as the current email.'
+        assert (
+            response.data['email'][0]
+            == 'New email cannot be the same as the current email.'
+        )
 
     def test_change_email_with_other_users_email(self, user):
         new_password_ = 'new_password1234%'
@@ -337,7 +352,12 @@ class TestUser:
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data['email'][0] == 'A user with this email already exists.'
 
-    def test_validate_password_not_allowed_on_post(self, api_client, organization, job_title):
+    def test_validate_password_not_allowed_on_post(
+        self,
+        api_client,
+        organization,
+        job_title,
+    ):
         payload = {
             'organization': organization.id,
             'username': 'test_user_4',
@@ -363,7 +383,10 @@ class TestUser:
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data['errors'][0]['attr'] == 'email'
-        assert response.data['errors'][0]['detail'] == 'user with this email already exists.'
+        assert (
+            response.data['errors'][0]['detail']
+            == 'user with this email already exists.'
+        )
 
     @pytest.mark.skip
     @patch('apps.accounts.tasks.generate_thumbnail_task')
@@ -381,7 +404,10 @@ class TestUser:
 
         generate_thumbnail_task(profile_id=user_profile.id)
 
-        user_thumbnail.assert_called_once_with(size=(100, 100), user_profile=user_profile)
+        user_thumbnail.assert_called_once_with(
+            size=(100, 100),
+            user_profile=user_profile,
+        )
         user_thumbnail.assert_called_once()
 
     def test_get_user_by_org_id_selector(self, user):

@@ -1,29 +1,37 @@
-from django.utils import timezone
-from rest_framework import views, status, viewsets, exceptions
 from core.permissions import CustomObjectPermissions
+from django.contrib.auth import get_user_model
+from django.contrib.auth import login
+from django.contrib.auth import logout
+from django.contrib.auth.models import Permission
 from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404
-from django.contrib.auth import login, logout, get_user_model
-from rest_framework.generics import UpdateAPIView
-from rest_framework.response import Response
-from rest_framework.decorators import action
-from django.contrib.auth.models import Permission
-from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
+from django.utils import timezone
+from rest_framework import exceptions
+from rest_framework import status
+from rest_framework import views
+from rest_framework import viewsets
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.decorators import action
+from rest_framework.generics import UpdateAPIView
+from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
-from apps.accounts.models import Token, JobTitle, CustomGroup, UserFavorite
+from apps.accounts.api.serializers import ChangePasswordSerializer
+from apps.accounts.api.serializers import GroupSerializer
+from apps.accounts.api.serializers import JobTitleSerializer
+from apps.accounts.api.serializers import PermissionSerializer
+from apps.accounts.api.serializers import ResetPasswordSerializer
+from apps.accounts.api.serializers import TokenProvisionSerializer
+from apps.accounts.api.serializers import UpdateEmailSerializer
+from apps.accounts.api.serializers import UserFavoriteSerializer
+from apps.accounts.api.serializers import UserSerializer
+from apps.accounts.models import CustomGroup
+from apps.accounts.models import JobTitle
+from apps.accounts.models import Token
+from apps.accounts.models import UserFavorite
 from apps.accounts.permissions import OwnershipPermissions
-from apps.accounts.api.serializers import (
-    UserSerializer,
-    GroupSerializer,
-    JobTitleSerializer,
-    PermissionSerializer,
-    UpdateEmailSerializer,
-    UserFavoriteSerializer,
-    ResetPasswordSerializer,
-    ChangePasswordSerializer,
-    TokenProvisionSerializer,
-)
 
 User = get_user_model()
 

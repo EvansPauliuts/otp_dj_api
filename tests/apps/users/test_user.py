@@ -1,6 +1,7 @@
 import pytest
-from django.urls import reverse
 from apps.users.models import PendingUser
+from django.urls import reverse
+from rest_framework import status
 
 from tests.conftest import api_client_with_credentials
 
@@ -21,7 +22,7 @@ class TestUser:
         }
 
         response = api_client.post(self.user_list_endpoint, data, format='json')
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
 
         pending_user = PendingUser.objects.get(phone=data['phone'])
 
@@ -40,7 +41,7 @@ class TestUser:
             'password': '<PASSWORD>',
         }
         response = api_client.post(self.user_list_endpoint, data, format='json')
-        assert response.status_code == 400
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
 
     def test_admin_retrieve_all_users(
         self,
@@ -53,8 +54,8 @@ class TestUser:
         token = user['token']
         api_client_with_credentials(token, api_client)
         response = api_client.get(self.user_list_endpoint)
-        assert response.status_code == 200
-        assert response.json()['total'] == 4
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json()['total'] == 4  # noqa: PLR2004
 
     def test_non_admin_retrieve_data(
         self,
@@ -67,7 +68,7 @@ class TestUser:
         token = user['token']
         api_client_with_credentials(token, api_client)
         response = api_client.get(self.user_list_endpoint)
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         assert response.json()['total'] == 1
 
     def test_admin_update_all_users(
@@ -85,7 +86,7 @@ class TestUser:
         api_client_with_credentials(token, api_client)
         url = reverse('users:user-detail', kwargs={'pk': app_user.id})
         response = api_client.patch(url, data, format='json')
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         assert response.json()['first_name'] == data['first_name']
 
     def test_admin_delete_user(
@@ -100,7 +101,7 @@ class TestUser:
         api_client_with_credentials(token, api_client)
         url = reverse('users:user-detail', kwargs={'pk': app_user.id})
         response = api_client.delete(url, format='json')
-        assert response.status_code == 204
+        assert response.status_code == status.HTTP_204_NO_CONTENT
 
     def test_deny_delete_to_non_admin(
         self,
@@ -114,7 +115,7 @@ class TestUser:
         api_client_with_credentials(token, api_client)
         url = reverse('users:user-detail', kwargs={'pk': app_user.id})
         response = api_client.delete(url, format='json')
-        assert response.status_code == 403
+        assert response.status_code == status.HTTP_403_FORBIDDEN
 
     def test_non_admin_update_personal_data(
         self,
@@ -130,5 +131,5 @@ class TestUser:
         api_client_with_credentials(token, api_client)
         url = reverse('users:user-detail', kwargs={'pk': user_instance.id})
         response = api_client.patch(url, data, format='json')
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         assert response.json()['first_name'] == data['first_name']

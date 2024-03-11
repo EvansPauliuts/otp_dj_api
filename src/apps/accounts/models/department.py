@@ -1,8 +1,8 @@
 import uuid
 
 from django.db import models
-from django.urls import reverse
 from django.db.models.functions import Lower
+from django.urls import reverse
 
 from .business import BusinessUnit
 from .organization import Organization

@@ -1,10 +1,13 @@
 import re
 
-from django.db import transaction
 from core.utils.helpers import get_or_create_business_unit
 from django.core.management import BaseCommand
+from django.db import transaction
 
-from apps.accounts.models import User, JobTitle, UserProfile, Organization
+from apps.accounts.models import JobTitle
+from apps.accounts.models import Organization
+from apps.accounts.models import User
+from apps.accounts.models import UserProfile
 
 
 class Command(BaseCommand):

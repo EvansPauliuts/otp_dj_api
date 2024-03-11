@@ -1,11 +1,16 @@
-from datetime import UTC, datetime, timedelta
+from datetime import UTC
+from datetime import datetime
+from datetime import timedelta
 
 import pytest
 import time_machine
+from apps.users.common import SystemRoleEnum
+from apps.users.common import TokenEnum
+from apps.users.models import PendingUser
+from apps.users.models import Token
+from apps.users.models import User
 from django.urls import reverse
 from rest_framework import status
-from apps.users.common import TokenEnum, SystemRoleEnum
-from apps.users.models import User, Token, PendingUser
 
 from tests.conftest import api_client_with_credentials
 
@@ -106,7 +111,7 @@ class TestAuthEndpoints:
             data,
             format='json',
         )
-        assert response.status_code == 400
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
 
     def test_change_password_using_valid_old_password(
         self,
@@ -155,7 +160,7 @@ class TestAuthEndpoints:
         pending_user = PendingUser.objects.create(
             phone='+375 44 444-44-44',
             verification_code=1234,
-            password='<PASSWORD>',
+            password='<PASSWORD>',  # noqa: S106
         )
         data = {
             'otp': pending_user.verification_code,
@@ -173,7 +178,7 @@ class TestAuthEndpoints:
         pending_user = PendingUser.objects.create(
             phone='+375 44 444-44-44',
             verification_code=1234,
-            password='<PASSWORD>',
+            password='<PASSWORD>',  # noqa: S106
         )
         with time_machine.travel(datetime.now(UTC) + timedelta(minutes=10)):
             data = {
@@ -187,7 +192,7 @@ class TestAuthEndpoints:
         pending_user = PendingUser.objects.create(
             phone='+375 44 444-44-44',
             verification_code=1234,
-            password='password',
+            password='password',  # noqa: S106
         )
         data = {
             'otp': 3456,

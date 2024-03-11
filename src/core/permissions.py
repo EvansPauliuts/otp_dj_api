@@ -1,9 +1,7 @@
-from rest_framework.permissions import (
-    AllowAny,
-    BasePermission,
-    IsAuthenticated,
-    DjangoModelPermissions,
-)
+from rest_framework.permissions import AllowAny
+from rest_framework.permissions import BasePermission
+from rest_framework.permissions import DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 
 
 class SuperUserOnly(BasePermission):
