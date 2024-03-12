@@ -103,3 +103,4 @@ inline-quotes = "single"
 [lint.pylint]
 max-locals = 20
 max-public-methods = 30
+max-args = 10

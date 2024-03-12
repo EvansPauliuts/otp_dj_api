@@ -1,17 +1,8 @@
-from core.models import StatusChoices
 from core.permissions import CustomObjectPermissions
-from django.db.models import Avg
-from django.db.models import Case
-from django.db.models import Count
-from django.db.models import ExpressionWrapper
 from django.db.models import F
-from django.db.models import FloatField
-from django.db.models import IntegerField
 from django.db.models import Prefetch
 
 # from django.db.models import QuerySet
-from django.db.models import When
-from django.db.models.functions import Extract
 from rest_framework import permissions
 from rest_framework import viewsets
 
@@ -69,28 +60,28 @@ class LocationViewSet(viewsets.ModelViewSet):
             )
             .select_related('location_category')
             .annotate(
-                wait_time_avg=Avg(
-                    ExpressionWrapper(
-                        (
-                            Extract('stop__departure_time', 'epoch')
-                            - Extract('stop__arrival_time', 'epoch')
-                        )
-                        / 60,
-                        output_field=FloatField(),
-                    ),
-                ),
-                pickup_count=Count(
-                    Case(
-                        When(
-                            stop__type_type__in=['P', 'SP'],
-                            stop__arrival_time__isnull=False,
-                            stop__status=StatusChoices.COMPLETED,
-                            then=1,
-                        ),
-                        default=None,
-                        output_field=IntegerField(),
-                    ),
-                ),
+                # wait_time_avg=Avg(
+                #     ExpressionWrapper(
+                #         (
+                #             Extract('stop__departure_time', 'epoch')
+                #             - Extract('stop__arrival_time', 'epoch')
+                #         )
+                #         / 60,
+                #         output_field=FloatField(),
+                #     ),
+                # ),
+                # pickup_count=Count(
+                #     Case(
+                #         When(
+                #             stop__type_type__in=['P', 'SP'],
+                #             stop__arrival_time__isnull=False,
+                #             stop__status=StatusChoices.COMPLETED,
+                #             then=1,
+                #         ),
+                #         default=None,
+                #         output_field=IntegerField(),
+                #     ),
+                # ),
                 location_color=F('location_category__color'),
                 location_category_name=F('location_category__name'),
             )
