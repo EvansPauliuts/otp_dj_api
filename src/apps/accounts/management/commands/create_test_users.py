@@ -22,7 +22,7 @@ class Command(BaseCommand):
 
         system_org_answer = input(
             "What is the SCAC of organization you'd like "
-            "to add the test users to? (Scac Code) ",
+            'to add the test users to? (Scac Code) ',
         )
         number_of_users_answer = input('How many test users would you like to create? ')
 

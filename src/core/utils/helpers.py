@@ -2,13 +2,14 @@ import io
 import time
 from functools import wraps
 
-from apps.accounts.models import BusinessUnit
 from dateutil.parser import parse
 from django.db import models
 from PIL import Image
 
 
 def get_or_create_business_unit(*, bs_name):
+    from apps.accounts.models import BusinessUnit
+
     business_unit, _ = BusinessUnit.objects.get_or_create(name=bs_name)
     return business_unit
 

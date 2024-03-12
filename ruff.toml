@@ -81,6 +81,7 @@ ignore = [
   "ERA001",
   "S105",
   "PLR6201",
+  "PLC0415",
 ]
 fixable = ["ALL"]
 unfixable = []
@@ -89,17 +90,12 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 [lint.isort]
 force-single-line = true
 
-#[lint.pydocstyle]
-#convention = "google"
-
 [format]
 indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "auto"
-#preview = true
-#exclude = ["*.pyi"]
-#quote-style = "single"
-#docstring-code-format = true
+quote-style = "single"
+
 
 [lint.flake8-quotes]
 inline-quotes = "single"
