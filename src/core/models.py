@@ -6,13 +6,19 @@ from django.db.models import CharField
 from django.utils import timezone
 
 
-class Timestamped(models.Model):
+class UUIDModel(models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False,
         unique=True,
     )
+
+    class Meta:
+        abstract = True
+
+
+class Timestamped(UUIDModel, models.Model):
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     updated = models.DateTimeField(
         auto_now=True,
@@ -122,6 +128,15 @@ class TimezoneChoices(models.TextChoices):
     MOUNTAIN = 'America/Denver', 'Mountain'
     CENTRAL = 'America/Chicago', 'Central'
     EASTERN = 'America/New_York', 'Eastern'
+
+
+class StatusChoices(models.TextChoices):
+    NEW = 'N', 'New'
+    IN_PROGRESS = 'P', 'In Progress'
+    COMPLETED = 'C', 'Completed'
+    HOLD = 'H', 'Hold'
+    BILLED = 'B', 'Billed'
+    VOIDED = 'V', 'Voided'
 
 
 class DefaultModel(models.Model):

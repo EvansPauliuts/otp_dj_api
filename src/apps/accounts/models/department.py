@@ -1,5 +1,4 @@
-import uuid
-
+from core.models import UUIDModel
 from django.db import models
 from django.db.models.functions import Lower
 from django.urls import reverse
@@ -8,13 +7,7 @@ from .business import BusinessUnit
 from .organization import Organization
 
 
-class Depot(models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False,
-        unique=True,
-    )
+class Depot(UUIDModel, models.Model):
     business_unit = models.ForeignKey(
         BusinessUnit,
         on_delete=models.CASCADE,
@@ -50,13 +43,7 @@ class Depot(models.Model):
         )
 
 
-class Department(models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False,
-        unique=True,
-    )
+class Department(UUIDModel, models.Model):
     business_unit = models.ForeignKey(
         BusinessUnit,
         on_delete=models.CASCADE,

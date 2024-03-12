@@ -1,10 +1,9 @@
-import uuid
-
 from core.models import ChoiceField
 from core.models import GenericModel
 from core.models import PrimaryStatusChoices
 from core.models import TimeStampedModel
 from core.models import TimezoneChoices
+from core.models import UUIDModel
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth.models import GroupManager
@@ -151,13 +150,7 @@ class UserManager(BaseUserManager):
         )
 
 
-class User(AbstractBaseUser, CustomPermissionMixin):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False,
-        unique=True,
-    )
+class User(UUIDModel, AbstractBaseUser, CustomPermissionMixin):
     business_unit = models.ForeignKey(
         BusinessUnit,
         on_delete=models.CASCADE,
@@ -216,12 +209,6 @@ class User(AbstractBaseUser, CustomPermissionMixin):
 
 
 class UserProfile(GenericModel):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False,
-        unique=True,
-    )
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
@@ -319,13 +306,7 @@ class UserProfile(GenericModel):
         return f'{self.first_name} {self.last_name}'
 
 
-class Token(models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False,
-        unique=True,
-    )
+class Token(UUIDModel, models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -360,12 +341,6 @@ class Token(models.Model):
 
 
 class UserFavorite(GenericModel):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False,
-        unique=True,
-    )
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
