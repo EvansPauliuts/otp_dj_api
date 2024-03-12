@@ -4,6 +4,7 @@ from django.contrib.auth import password_validation
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import Permission
 from django.db import transaction
+from django.utils.crypto import get_random_string
 from drf_spectacular.utils import OpenApiExample
 from drf_spectacular.utils import extend_schema_serializer
 from rest_framework import serializers
@@ -192,7 +193,8 @@ class UserSerializer(GenericModelSerializer):
         profile_data['organization'] = organization
         profile_data['business_unit'] = business_unit
 
-        new_password = User.objects.make_random_password()
+        new_password = get_random_string(length=50)
+
         user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
@@ -339,7 +341,7 @@ class ResetPasswordSerializer(serializers.Serializer):
 
     def save(self, request):
         user = User.objects.get(email=self.validated_data['email'])
-        new_password = User.objects.make_random_password()
+        new_password = get_random_string(length=50)
         user.set_password(new_password)
         user.save()
 

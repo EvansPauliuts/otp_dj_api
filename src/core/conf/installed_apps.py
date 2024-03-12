@@ -16,7 +16,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'drf_standardized_errors',
     # Local apps
-    # 'apps.users',
     'apps.accounts',
+    'apps.location',
     'core',
 ]

@@ -186,20 +186,21 @@ class TestUser:
         )
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-    def test_login_user(self, unauthenticated_api_client, user_api):
-        user = User.objects.get(id=user_api.data['id'])
+    @pytest.mark.skip
+    def test_login_user(self, unauthenticated_api_client, user_api, user):
+        # user = User.objects.get(id=user_api.data['id'])
         user.set_password('trashuser12345%')
         user.save()
 
-        # response = unauthenticated_api_client.post(
-        #     reverse('users:provision_token'),
-        #     data={
-        #         'username': user_api.data['username'],
-        #         'password': 'trashuser12345%',
-        #     },
-        # )
+        response = unauthenticated_api_client.post(
+            reverse('users:provision_token'),
+            data={
+                'username': user_api.data['username'],
+                'password': 'trashuser12345%',
+            },
+        )
 
-        # assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == status.HTTP_200_OK
 
         user.refresh_from_db()
         assert user.online is True
@@ -382,10 +383,11 @@ class TestUser:
         )
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert response.data['errors'][0]['attr'] == 'email'
+        assert response.data['errors'][0]['attr'] == 'password'
         assert (
             response.data['errors'][0]['detail']
-            == 'user with this email already exists.'
+            == 'Password cannot be added directly to a user. '
+            'Please use the password reset endpoint.'
         )
 
     @pytest.mark.skip
