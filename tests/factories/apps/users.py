@@ -32,5 +32,4 @@ class TokenFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Token
 
-
-token = fake.md5()
+    token = fake.md5()

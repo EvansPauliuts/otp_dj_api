@@ -183,7 +183,11 @@ class User(UUIDModel, AbstractBaseUser, CustomPermissionMixin):
         choices=TimezoneChoices,
         validators=[validate_org_timezone],
     )
-    session_key = models.CharField(max_length=40, blank=True)
+    session_key = models.CharField(
+        max_length=40,
+        blank=True,
+        null=True,
+    )
     objects = UserManager()
 
     USERNAME_FIELD = 'username'
