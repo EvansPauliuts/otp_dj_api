@@ -32,7 +32,7 @@ def create_or_update_location_comments(
                 id=id_c.get('id'),
                 location=location,
                 entered_by=user,
-                defaults=location_comments_data,
+                defaults=id_c,
             )
             created_comment.append(contact)
 
@@ -68,7 +68,7 @@ def create_or_update_location_contacts(
             contact, created = LocationContact.objects.update_or_create(
                 id=id_c.get('id'),
                 location=location,
-                defaults=location_contacts_data,
+                defaults=id_c,
             )
             created_contracts.append(contact)
 

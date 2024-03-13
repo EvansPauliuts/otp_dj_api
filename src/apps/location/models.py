@@ -130,7 +130,7 @@ class LocationContact(GenericModel):
     name = models.CharField(max_length=255, db_index=True)
     email = models.EmailField(max_length=255, blank=True)
     phone = models.CharField(
-        max_length=15,
+        max_length=19,
         blank=True,
         validators=[PhoneValidator()],
     )
