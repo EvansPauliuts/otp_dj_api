@@ -11,6 +11,9 @@ from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import RequestFactory
 from django.urls import reverse
+
+# from uuid import UUID
+from django.utils.crypto import get_random_string
 from PIL import Image
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
@@ -187,22 +190,28 @@ class TestUser:
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
     @pytest.mark.skip
-    def test_login_user(self, unauthenticated_api_client, user_api, user):
-        # user = User.objects.get(id=user_api.data['id'])
-        user.set_password('trashuser12345%')
+    def test_login_user(self, unauthenticated_api_client, user_api):
+        user = User.objects.get(id=user_api.data['id'])
+        new_password = get_random_string(length=50)
+
+        user.password = new_password
         user.save()
 
         response = unauthenticated_api_client.post(
             reverse('users:provision_token'),
             data={
                 'username': user_api.data['username'],
-                'password': 'trashuser12345%',
+                'password': new_password,
             },
         )
+
+        # assert response.data['user_id'] == UUID(user_api.data['id'])
+        # assert response.data['organization_id'] == UUID(user_api.data['organization'])
 
         assert response.status_code == status.HTTP_200_OK
 
         user.refresh_from_db()
+
         assert user.online is True
         assert user.last_login
 
